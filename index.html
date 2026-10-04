@@ -18,41 +18,52 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
-  overflow: hidden;
 }
 body {
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* Περιορισμός στο 90% του πλάτους και ύψους */
+.dashboard-container {
+  width: 90vw;
+  max-width: 1400px;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 7vh;
-  min-height: 36px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
-#time { font-size: clamp(20px, 4vh, 32px); font-weight: 700; line-height: 1; }
-#date { font-size: clamp(10px, 1.8vh, 13px); color: var(--muted); text-transform: capitalize; }
+#time { font-size: clamp(22px, 3.5vw, 32px); font-weight: 700; line-height: 1; }
+#date { font-size: clamp(10px, 1.4vw, 13px); color: var(--muted); text-transform: capitalize; margin-top: 2px; }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
 }
 .badge {
-  padding: 4px 8px;
+  padding: 5px 9px;
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--muted);
-  font-size: clamp(9px, 1.5vh, 12px);
+  font-size: clamp(10px, 1.2vw, 12px);
   background: var(--panel);
 }
 .btn {
@@ -60,8 +71,8 @@ header {
   color: var(--text);
   border: 1px solid #2a394b;
   border-radius: 6px;
-  padding: 5px 9px;
-  font-size: clamp(9px, 1.5vh, 12px);
+  padding: 6px 10px;
+  font-size: clamp(10px, 1.2vw, 12px);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -74,39 +85,45 @@ main {
   flex: 1;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr 1fr;
-  gap: 8px;
-  min-height: 0;
+  gap: 10px;
 }
 .card {
   background: linear-gradient(145deg, #0d131c, #090d13);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 8px 10px;
+  border-radius: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 0;
-  overflow: hidden;
+  gap: 8px;
 }
 
 .label {
-  font-size: clamp(8px, 1.3vh, 11px);
+  font-size: clamp(9px, 1vw, 11px);
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.8px;
+  text-align: center;
 }
-.metric { text-align: center; flex: 1; }
-.value { font-size: clamp(13px, 2.3vh, 20px); font-weight: 700; margin-top: 1px; }
+.metric { text-align: center; flex: 1; min-width: 0; }
+.value { 
+  font-size: clamp(12px, 1.5vw, 18px); 
+  font-weight: 700; 
+  margin-top: 2px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Speed Section */
-.speed-card { align-items: center; justify-content: space-around; }
+.speed-card { align-items: center; text-align: center; }
 #speed {
-  font-size: clamp(42px, 12vh, 85px);
+  font-size: clamp(48px, 8vw, 85px);
   font-weight: 800;
-  line-height: 0.85;
+  line-height: 0.9;
   color: var(--text);
 }
-.unit { font-size: clamp(12px, 2vh, 16px); color: var(--muted); }
+.unit { font-size: clamp(12px, 1.5vw, 16px); color: var(--muted); }
 
 /* Compass Wheel */
 .compass-box {
@@ -114,42 +131,44 @@ main {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 2px 0;
+  margin: 4px 0;
 }
 .compass-ring {
-  width: clamp(32px, 5vh, 48px);
-  height: clamp(32px, 5vh, 48px);
+  width: clamp(32px, 3.5vw, 44px);
+  height: clamp(32px, 3.5vw, 44px);
   border-radius: 50%;
   border: 2px solid var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: clamp(10px, 1.8vh, 14px);
+  font-size: clamp(10px, 1.2vw, 14px);
   transition: transform 0.2s ease-out;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  gap: 4px;
+  gap: 6px;
   width: 100%;
 }
 
 .notice {
-  font-size: clamp(7.5px, 1.2vh, 9.5px);
+  font-size: clamp(8.5px, 0.9vw, 10px);
   color: var(--muted);
   background: rgba(255, 255, 255, 0.02);
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: 6px;
+  border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.04);
   text-align: center;
+  line-height: 1.3;
 }
 
 #map {
   height: 100%;
+  min-height: 160px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #111821;
   display: flex;
   align-items: center;
@@ -163,107 +182,118 @@ main {
 footer {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-  height: 11vh;
-  min-height: 48px;
+  gap: 8px;
 }
 .tile {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 4px;
+  border-radius: 10px;
+  padding: 8px 4px;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.tile b { display: block; font-size: clamp(11px, 2vh, 15px); margin-top: 1px; }
-.tile span { font-size: clamp(7.5px, 1.2vh, 9.5px); color: var(--muted); }
+.tile b { 
+  display: block; 
+  font-size: clamp(11px, 1.3vw, 15px); 
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tile span { font-size: clamp(8px, 0.9vw, 10px); color: var(--muted); }
 
-/* Responsive adjustments */
-@media (max-width: 768px) and (orientation: portrait) {
-  body { overflow-y: auto; }
-  main { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
-  .speed-card { grid-column: 1 / 3; }
-  .mapcard { grid-column: 1 / 3; height: 180px; }
-  footer { grid-template-columns: repeat(3, 1fr); height: auto; }
+/* Προσαρμογή για Κινητό σε Όρθια Θέση (Portrait) */
+@media (max-width: 850px) and (orientation: portrait) {
+  .dashboard-container { width: 92vw; min-height: auto; }
+  main { grid-template-columns: 1fr; }
+  footer { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Προσαρμογή για Οριζόντια Οθόνη Κινητού / Αυτοκινήτου (Landscape) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .dashboard-container { width: 94vw; min-height: auto; }
+  #speed { font-size: clamp(36px, 10vh, 60px); }
+  .value { font-size: clamp(11px, 3vh, 15px); }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div>
-    <div id="time">--:--</div>
-    <div id="date">—</div>
-  </div>
-  <div class="header-actions">
-    <button class="btn btn-sos" onclick="copySOS()">🆘 SOS</button>
-    <button class="btn" onclick="toggleFullscreen()">⛶ Πλήρης Οθόνη</button>
-    <button class="btn" id="start">📡 Αισθητήρες</button>
-    <div class="badge" id="gpsStatus">GPS: Αναμονή</div>
-  </div>
-</header>
-
-<main>
-  <!-- Ταχύτητα & Πορεία -->
-  <section class="card speed-card">
-    <div class="label">Ταχύτητα GPS</div>
-    <div id="speed">0</div>
-    <div class="unit">km/h</div>
-    
-    <div class="compass-box">
-      <div class="compass-ring" id="compassRing">Ν</div>
-      <div>
-        <div class="label">Πορεία</div>
-        <div class="value" id="heading">—</div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="metric"><div class="label">Μέγιστη</div><div class="value" id="maxSpeed">0 km/h</div></div>
-      <div class="metric"><div class="label">Μέση</div><div class="value" id="avgSpeed">0 km/h</div></div>
-      <div class="metric"><div class="label">Απόσταση</div><div class="value" id="tripDist">0.0 km</div></div>
-    </div>
-  </section>
-
-  <!-- Αισθητήρες & Κλίσεις -->
-  <section class="card">
+<div class="dashboard-container">
+  <header>
     <div>
-      <div class="label">Αισθητήρες Κίνησης</div>
-      <div class="row" style="margin-top:4px">
-        <div class="metric"><div class="label">Πρόσθια Κλίση</div><div class="value" id="pitch">—</div></div>
-        <div class="metric"><div class="label">Πλευρική Κλίση</div><div class="value" id="roll">—</div></div>
-      </div>
-      <div class="row" style="margin-top:4px">
-        <div class="metric"><div class="label">Υψόμετρο</div><div class="value" id="alt">—</div></div>
-        <div class="metric"><div class="label">Δύναμη G</div><div class="value" id="gforce">—</div></div>
-      </div>
+      <div id="time">--:--</div>
+      <div id="date">—</div>
     </div>
-    <div class="notice">
-      ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση κλίσεων.
+    <div class="header-actions">
+      <button class="btn btn-sos" onclick="copySOS()">🆘 SOS</button>
+      <button class="btn" onclick="toggleFullscreen()">⛶ Πλήρης Οθόνη</button>
+      <button class="btn" id="start">📡 Αισθητήρες</button>
+      <div class="badge" id="gpsStatus">GPS: Αναμονή</div>
     </div>
-  </section>
+  </header>
 
-  <!-- Χάρτης -->
-  <section class="card mapcard">
-    <div id="map">Ο χάρτης θα εμφανιστεί μόλις ληφθεί θέση GPS.</div>
-  </section>
-</main>
+  <main>
+    <!-- Ταχύτητα & Πορεία -->
+    <section class="card speed-card">
+      <div class="label">Ταχύτητα GPS</div>
+      <div id="speed">0</div>
+      <div class="unit">km/h</div>
+      
+      <div class="compass-box">
+        <div class="compass-ring" id="compassRing">Ν</div>
+        <div>
+          <div class="label">Πορεία</div>
+          <div class="value" id="heading">—</div>
+        </div>
+      </div>
 
-<footer>
-  <div class="tile"><span>ΚΑΙΡΟΣ</span><b id="weather">—</b></div>
-  <div class="tile"><span>ΣΕΛΗΝΗ</span><b id="moon">—</b></div>
-  <div class="tile"><span>ΔΥΣΗ ΗΛΙΟΥ</span><b id="sunset">—</b></div>
-  <div class="tile"><span>ΑΚΡΙΒΕΙΑ GPS</span><b id="accuracy">—</b></div>
-  <div class="tile"><span>ΠΛΑΤΟΣ (LAT)</span><b id="lat">—</b></div>
-  <div class="tile"><span>ΜΗΚΟΣ (LON)</span><b id="lon">—</b></div>
-</footer>
+      <div class="row">
+        <div class="metric"><div class="label">Μέγιστη</div><div class="value" id="maxSpeed">0 km/h</div></div>
+        <div class="metric"><div class="label">Μέση</div><div class="value" id="avgSpeed">0 km/h</div></div>
+        <div class="metric"><div class="label">Απόσταση</div><div class="value" id="tripDist">0.0 km</div></div>
+      </div>
+    </section>
+
+    <!-- Αισθητήρες & Κλίσεις -->
+    <section class="card">
+      <div>
+        <div class="label">Αισθητήρες Κίνησης</div>
+        <div class="row" style="margin-top:8px">
+          <div class="metric"><div class="label">Πρόσθια Κλίση</div><div class="value" id="pitch">—</div></div>
+          <div class="metric"><div class="label">Πλευρική Κλίση</div><div class="value" id="roll">—</div></div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div class="metric"><div class="label">Υψόμετρο</div><div class="value" id="alt">—</div></div>
+          <div class="metric"><div class="label">Δύναμη G</div><div class="value" id="gforce">—</div></div>
+        </div>
+      </div>
+      <div class="notice">
+        ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση κλίσεων.
+      </div>
+    </section>
+
+    <!-- Χάρτης -->
+    <section class="card mapcard">
+      <div id="map">Ο χάρτης θα εμφανιστεί μόλις ληφθεί θέση GPS.</div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="tile"><span>ΚΑΙΡΟΣ</span><b id="weather">—</b></div>
+    <div class="tile"><span>ΣΕΛΗΝΗ</span><b id="moon">—</b></div>
+    <div class="tile"><span>ΔΥΣΗ ΗΛΙΟΥ</span><b id="sunset">—</b></div>
+    <div class="tile"><span>ΑΚΡΙΒΕΙΑ GPS</span><b id="accuracy">—</b></div>
+    <div class="tile"><span>ΠΛΑΤΟΣ (LAT)</span><b id="lat">—</b></div>
+    <div class="tile"><span>ΜΗΚΟΣ (LON)</span><b id="lon">—</b></div>
+  </footer>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
 
-// Ώρα & Ημερομηνία
 function clock() {
   const d = new Date();
   $("time").textContent = d.toLocaleTimeString("el-GR", { hour: "2-digit", minute: "2-digit" });
@@ -279,7 +309,6 @@ let speedCount = 0;
 let totalDistance = 0;
 let lastMapLat = null, lastMapLon = null;
 
-// Μετατροπή μοιρών σε Πυξίδα
 function compass(deg) {
   if (deg == null || isNaN(deg)) return "—";
   const dirs = ["Β", "ΒΑ", "Α", "ΝΑ", "Ν", "ΝΔ", "Δ", "ΒΔ"];
@@ -289,7 +318,6 @@ function compass(deg) {
   return dirs[idx] + " " + Math.round(deg) + "°";
 }
 
-// Υπολογισμός Απόστασης
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -302,7 +330,7 @@ function updateMap(lat, lon) {
   if (lastMapLat !== null && getDistance(lastMapLat, lastMapLon, lat, lon) < 0.05) return;
   lastMapLat = lat; lastMapLon = lon;
   const embedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lon - 0.005}%2C${lat - 0.003}%2C${lon + 0.005}%2C${lat + 0.003}&layer=mapnik&marker=${lat}%2C${lon}`;
-  $("map").innerHTML = `<iframe title="Χάρτης" style="width:100%;height:100%;border:0;border-radius:8px;filter: invert(90%) hue-rotate(180deg) contrast(120%);" src="${embedUrl}"></iframe>`;
+  $("map").innerHTML = `<iframe title="Χάρτης" style="width:100%;height:100%;border:0;border-radius:10px;filter: invert(90%) hue-rotate(180deg) contrast(120%);" src="${embedUrl}"></iframe>`;
 }
 
 function gpsSuccess(p) {
@@ -342,7 +370,6 @@ if (navigator.geolocation) {
   navigator.geolocation.watchPosition(gpsSuccess, gpsError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 }
 
-// Αισθητήρες
 function orientation(e) {
   if (e.beta != null) $("pitch").textContent = Math.round(e.beta) + "°";
   if (e.gamma != null) $("roll").textContent = Math.round(e.gamma) + "°";
@@ -366,7 +393,6 @@ async function sensors() {
 }
 $("start").onclick = sensors;
 
-// Υπολογισμός Φάσης Σελήνης
 function getMoonPhase() {
   const d = new Date();
   let year = d.getFullYear(), month = d.getMonth() + 1, day = d.getDate();
@@ -386,7 +412,6 @@ function getMoonPhase() {
 }
 $("moon").textContent = getMoonPhase();
 
-// Καιρός
 async function weather() {
   if (!lastPos) return setTimeout(weather, 3000);
   const { latitude, longitude } = lastPos.coords;
@@ -401,7 +426,6 @@ async function weather() {
 }
 setInterval(weather, 60000); weather();
 
-// Fullscreen & SOS Functions
 function toggleFullscreen() {
   if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
   else document.exitFullscreen().catch(()=>{});
@@ -409,7 +433,7 @@ function toggleFullscreen() {
 function copySOS() {
   if (!lastPos) return alert("Δεν υπάρχει διαθέσιμο σήμα GPS ακόμα.");
   const text = `SOS! Θέση: https://maps.google.com/?q=${lastPos.coords.latitude},${lastPos.coords.longitude}`;
-  navigator.clipboard.writeText(text).then(() => alert("Οι συντεταγμένες SOS αντιγράφηκαν! Metaδώστε τις όπου χρειάζεται."));
+  navigator.clipboard.writeText(text).then(() => alert("Οι συντεταγμένες SOS αντιγράφηκαν!"));
 }
 </script>
 </body>
