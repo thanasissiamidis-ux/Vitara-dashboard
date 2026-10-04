@@ -60,6 +60,7 @@ header {
   padding: 4px;
   border-radius: 10px;
   border: 1px solid var(--line);
+  flex-wrap: wrap;
 }
 .tab-btn {
   background: transparent;
@@ -276,10 +277,65 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
   padding: 2px 6px;
 }
 
+/* PAGE 4: Trip & Fuel Layout */
+.trip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+}
+.checklist-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.chk-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  font-size: 13px;
+  cursor: pointer;
+}
+.chk-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.fuel-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.input-row label {
+  font-size: 11px;
+  color: var(--muted);
+}
+.input-row input {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
 /* Responsive */
 @media (max-width: 850px) {
   .dashboard-container { width: 92vw; }
-  main, .driver-grid, .calc-grid { grid-template-columns: 1fr; }
+  main, .driver-grid, .calc-grid, .trip-grid { grid-template-columns: 1fr; }
   footer { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
@@ -298,6 +354,7 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
       <button class="tab-btn active" onclick="switchPage('p1', this)">🚗 Όργανα</button>
       <button class="tab-btn" onclick="switchPage('p2', this)">☕ Οδηγός</button>
       <button class="tab-btn" onclick="switchPage('p3', this)">🧮 Έξοδα</button>
+      <button class="tab-btn" onclick="switchPage('p4', this)">📋 Ταξίδι & Καύσιμο</button>
     </div>
 
     <div class="header-actions">
@@ -366,7 +423,6 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
   <!-- ==================== ΣΕΛΙΔΑ 2: ΟΔΗΓΟΣ & ΕΥΕΞΙΑ ==================== -->
   <div id="p2" class="page-content">
     <div class="driver-grid">
-      <!-- Δείκτης Κόπωσης -->
       <section class="card status-box">
         <div class="label">Χρόνος Συνεχούς Οδήγησης</div>
         <div class="huge-text" id="driveTimer">00:00:00</div>
@@ -376,7 +432,6 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
         <button class="btn" style="margin-top:10px; align-self:center;" onclick="resetDriveTimer()">🔄 Επανεκκίνηση Χρονομέτρου</button>
       </section>
 
-      <!-- Βαθμολογία Ομαλής Οδήγησης -->
       <section class="card status-box">
         <div class="label">Βαθμολογία Ομαλής Οδήγησης</div>
         <div class="huge-text" id="smoothScore" style="color:var(--success)">100%</div>
@@ -385,7 +440,6 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
         </div>
       </section>
 
-      <!-- Έκτακτη Ανάγκη / Τηλέφωνα -->
       <section class="card" style="grid-column: 1 / -1;">
         <div class="label">Τηλέφωνα Έκτακτης Ανάγκης</div>
         <div class="row" style="margin-top:10px">
@@ -400,7 +454,6 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
   <!-- ==================== ΣΕΛΙΔΑ 3: ΑΡΙΘΜΟΜΗΧΑΝΗ ΕΞΟΔΩΝ ==================== -->
   <div id="p3" class="page-content">
     <div class="calc-grid">
-      <!-- Πληκτρολόγιο -->
       <section class="card">
         <div class="label">Εισαγωγή Ποσού (€)</div>
         <div class="calc-display" id="calcDisplay">0</div>
@@ -428,20 +481,91 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
         </div>
       </section>
 
-      <!-- Λίστα Καταγραφών -->
       <section class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div class="label">Λίστα Εξόδων Ταξιδιού</div>
           <button class="btn" style="font-size:10px" onclick="clearAllExpenses()">Reset Όλα</button>
         </div>
 
-        <div class="expense-list" id="expenseList">
-          <!-- Δυναμική προσθήκη εξόδων εδώ -->
-        </div>
+        <div class="expense-list" id="expenseList"></div>
 
         <div style="border-top:1px solid var(--line); padding-top:10px; display:flex; justify-content:space-between; align-items:center;">
           <div class="label">Συνολικό Κόστος:</div>
           <div class="huge-text" id="totalExpense" style="font-size:24px">0.00 €</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 4: ΤΑΞΙΔΙ & ΚΑΥΣΙΜΟ ==================== -->
+  <div id="p4" class="page-content">
+    <div class="trip-grid">
+      <!-- Λίστα Ελέγχου (Pre-Trip Checklist) -->
+      <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Λίστα Ελέγχου Πριν το Ταξίδι</div>
+          <div class="badge" id="checkProgress">0%</div>
+        </div>
+
+        <div class="checklist-group">
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Πίεση Ελαστικών & Ρεζέρβα</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Στάθμη Λαδιού Κινητήρα</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Ψυκτικό Υγρό (Παραφλού)</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Νερό Υαλοκαθαριστήρων</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Φαρμακείο, Τρίγωνο, Ανακλαστικό Γιλέκο</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Πυροσβεστήρας (Σε ισχύ)</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Υπολογιστής Καυσίμου & Κόστους -->
+      <section class="card">
+        <div class="label">Υπολογιστής Κατανάλωσης & Κόστους</div>
+        
+        <div class="fuel-input-group">
+          <div class="input-row">
+            <label>Μέση Κατανάλωση (L/100km):</label>
+            <input type="number" id="fuelAvg" value="6.5" step="0.1" oninput="calculateFuel()">
+          </div>
+          <div class="input-row">
+            <label>Τιμή Καυσίμου (€/L):</label>
+            <input type="number" id="fuelPrice" value="1.85" step="0.01" oninput="calculateFuel()">
+          </div>
+          <div class="input-row">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label>Χιλιόμετρα Διαδρομής (km):</label>
+              <button class="btn" style="font-size:10px; padding:2px 6px;" onclick="useGpsDistance()">Χρήση GPS km</button>
+            </div>
+            <input type="number" id="tripKm" value="100" step="1" oninput="calculateFuel()">
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--line); padding-top:10px; margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div class="label" style="text-align:left">Απαιτούμενα Λίτρα:</div>
+            <div class="value" id="totalLiters" style="color:var(--accent)">6.5 L</div>
+          </div>
+          <div style="text-align:right">
+            <div class="label" style="text-align:right">Εκτιμώμενο Κόστος:</div>
+            <div class="huge-text" id="totalFuelCost" style="font-size:24px">12.03 €</div>
+          </div>
         </div>
       </section>
     </div>
@@ -542,7 +666,6 @@ function motion(e) {
   const g = Math.sqrt((a.x||0)**2 + (a.y||0)**2 + (a.z||0)**2) / 9.80665;
   $("gforce").textContent = g.toFixed(2) + " G";
 
-  // Υπολογισμός Smoothness Score
   if (g > 1.35) {
     totalGPoints = Math.max(50, totalGPoints - 0.2);
     $("smoothScore").textContent = Math.round(totalGPoints) + "%";
@@ -571,7 +694,7 @@ setInterval(() => {
   const secs = String(driveSeconds % 60).padStart(2, '0');
   $("driveTimer").textContent = `${hrs}:${mins}:${secs}`;
 
-  if (driveSeconds >= 7200) { // 2 ώρες
+  if (driveSeconds >= 7200) {
     $("restWarning").textContent = "⚠️ Προειδοποίηση: Έχετε ξεπεράσει τις 2 ώρες οδήγησης! Κάντε μια στάση.";
     $("restWarning").style.color = "var(--danger)";
   }
@@ -637,7 +760,35 @@ function renderExpenses() {
   $("totalExpense").textContent = total.toFixed(2) + " €";
 }
 
-// 7. Σελήνη & Καιρός
+// 7. Λίστα Ελέγχου & Υπολογιστής Καυσίμου (Σελίδα 4)
+function updateChecklistProgress() {
+  const checkboxes = document.querySelectorAll('.checklist-group input[type="checkbox"]');
+  let checkedCount = 0;
+  checkboxes.forEach(chk => { if (chk.checked) checkedCount++; });
+  const percent = Math.round((checkedCount / checkboxes.length) * 100);
+  $("checkProgress").textContent = percent + "%";
+  $("checkProgress").style.borderColor = percent === 100 ? "var(--success)" : "var(--line)";
+  $("checkProgress").style.color = percent === 100 ? "var(--success)" : "var(--muted)";
+}
+
+function calculateFuel() {
+  const avg = parseFloat($("fuelAvg").value) || 0;
+  const price = parseFloat($("fuelPrice").value) || 0;
+  const km = parseFloat($("tripKm").value) || 0;
+
+  const totalLiters = (avg / 100) * km;
+  const totalCost = totalLiters * price;
+
+  $("totalLiters").textContent = totalLiters.toFixed(1) + " L";
+  $("totalFuelCost").textContent = totalCost.toFixed(2) + " €";
+}
+
+function useGpsDistance() {
+  $("tripKm").value = Math.round(totalDistance) || 100;
+  calculateFuel();
+}
+
+// 8. Σελήνη & Καιρός
 function getMoonPhase() {
   const d = new Date();
   let year = d.getFullYear(), month = d.getMonth() + 1, day = d.getDate();
@@ -680,6 +831,9 @@ function copySOS() {
   const text = `SOS! Θέση: https://maps.google.com/?q=${lastPos.coords.latitude},${lastPos.coords.longitude}`;
   navigator.clipboard.writeText(text).then(() => alert("Οι συντεταγμένες SOS αντιγράφηκαν!"));
 }
+
+// Αρχικός υπολογισμός καυσίμου κατά τη φόρτωση
+calculateFuel();
 </script>
 </body>
 </html>
