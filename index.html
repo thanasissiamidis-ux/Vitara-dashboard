@@ -518,6 +518,10 @@ footer { gap: 10px; }
   color: var(--muted);
   margin-top: 5px;
 }
+
+.tilt-end.left { left: 4px; top: 50%; transform: translateY(-50%); }
+.tilt-end.right { right: 4px; top: 50%; transform: translateY(-50%); }
+
 .location-grid-info {
   display: grid;
   grid-template-columns: repeat(2, minmax(0,1fr));
@@ -956,16 +960,20 @@ if (navigator.geolocation) {
 
 // 4. Smoothness Score & Αισθητήρες
 let totalGPoints = 100;
+let sensorsStarted = false;
+
 function orientation(e) {
-  // Γραφική απεικόνιση αντί για αριθμούς: ο δείκτης περιστρέφεται ανάλογα
-  // με την πρόσθια/πίσω και την πλευρική κλίση της συσκευής.
+  // Οι δείκτες μετακινούνται πάνω στους άξονές τους — δεν περιστρέφονται.
+  // beta: εμπρός/πίσω, gamma: αριστερά/δεξιά.
   if (e.beta != null) {
     const pitch = Math.max(-45, Math.min(45, e.beta));
-    $("pitchIndicator").style.transform = `translate(-50%, -50%) rotate(${pitch}deg)`;
+    const pitchY = (pitch / 45) * 42;
+    $("pitchIndicator").style.transform = `translate(-50%, calc(-50% + ${pitchY}px))`;
   }
   if (e.gamma != null) {
     const roll = Math.max(-45, Math.min(45, e.gamma));
-    $("rollIndicator").style.transform = `translate(-50%, -50%) rotate(${roll}deg)`;
+    const rollX = (roll / 45) * 42;
+    $("rollIndicator").style.transform = `translate(calc(-50% + ${rollX}px), -50%)`;
   }
   if (e.alpha != null && $("heading").textContent === "—") $("heading").textContent = compass(360 - e.alpha);
 }
@@ -983,14 +991,32 @@ function motion(e) {
 }
 
 async function sensors() {
+  if (sensorsStarted) return;
+
   try {
-    if (DeviceMotionEvent?.requestPermission) await DeviceMotionEvent.requestPermission();
-    if (DeviceOrientationEvent?.requestPermission) await DeviceOrientationEvent.requestPermission();
-  } catch (err) {}
-  window.addEventListener("deviceorientation", orientation, true);
-  window.addEventListener("devicemotion", motion, true);
-  $("start").textContent = "📡 Ενεργοί";
-  $("start").disabled = true;
+    // Στο iPhone η άδεια πρέπει να ζητηθεί μέσα από πάτημα κουμπιού.
+    if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
+      const motionPermission = await DeviceMotionEvent.requestPermission();
+      if (motionPermission !== "granted") throw new Error("Motion permission denied");
+    }
+
+    if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+      const orientationPermission = await DeviceOrientationEvent.requestPermission();
+      if (orientationPermission !== "granted") throw new Error("Orientation permission denied");
+    }
+
+    window.addEventListener("deviceorientation", orientation, true);
+    window.addEventListener("deviceorientationabsolute", orientation, true);
+    window.addEventListener("devicemotion", motion, true);
+    sensorsStarted = true;
+    $("start").textContent = "📡 Ενεργοί";
+    $("start").disabled = true;
+    $("start").style.opacity = "0.65";
+  } catch (err) {
+    $("start").textContent = "📡 Ξαναδοκίμασε";
+    $("start").disabled = false;
+    alert("Δεν δόθηκε πρόσβαση στους αισθητήρες κίνησης. Στο iPhone επίτρεψε την πρόσβαση όταν ζητηθεί και ξαναπάτησε το κουμπί.");
+  }
 }
 $("start").onclick = sensors;
 
