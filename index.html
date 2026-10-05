@@ -9,7 +9,6 @@
 <style>
 /* ==================== ΘΕΜΑΤΑ ΕΜΦΑΝΙΣΗΣ (THEMES) ==================== */
 :root {
-  /* Προεπιλογή: NIGHT */
   --bg: #070a0f;
   --panel: #0d121a;
   --card-bg: linear-gradient(145deg, #0d131c, #090d13);
@@ -23,7 +22,6 @@
   --shadow: rgba(0,0,0,0.5);
 }
 
-/* DAY Theme */
 body.theme-day {
   --bg: #f2f4f8;
   --panel: #ffffff;
@@ -38,7 +36,6 @@ body.theme-day {
   --shadow: rgba(0,0,0,0.08);
 }
 
-/* DUSK Theme */
 body.theme-dusk {
   --bg: #1c1a24;
   --panel: #272333;
@@ -53,7 +50,6 @@ body.theme-dusk {
   --shadow: rgba(0,0,0,0.3);
 }
 
-/* NIGHT Theme */
 body.theme-night {
   --bg: #05070a;
   --panel: #0a0e14;
@@ -103,7 +99,6 @@ header {
 #time { font-size: clamp(28px, 3.8vw, 40px); font-weight: 700; line-height: 1; }
 #date { font-size: clamp(14px, 1.7vw, 18px); color: var(--muted); text-transform: capitalize; margin-top: 2px; }
 
-/* Navigation Tabs */
 .nav-tabs {
   display: flex;
   gap: 6px;
@@ -156,7 +151,6 @@ header {
 .btn:hover { opacity: 0.9; }
 .btn-sos { background: rgba(255, 77, 77, 0.15); border-color: var(--danger); color: var(--danger); font-weight: bold; }
 
-/* Theme Selector Control */
 .theme-select {
   background: var(--panel);
   color: var(--text);
@@ -168,11 +162,9 @@ header {
   cursor: pointer;
 }
 
-/* Page Content Handling */
 .page-content { display: none; flex: 1; flex-direction: column; gap: 10px; }
 .page-content.active { display: flex; }
 
-/* Main Grid - Page 1 */
 main {
   flex: 1;
   display: grid;
@@ -191,9 +183,7 @@ main {
   box-shadow: 0 4px 12px var(--shadow);
   transition: all 0.3s ease;
 }
-.card.hidden-widget {
-  display: none !important;
-}
+.card.hidden-widget { display: none !important; }
 
 .label {
   font-size: clamp(13px, 1.35vw, 17px);
@@ -212,7 +202,6 @@ main {
   text-overflow: ellipsis;
 }
 
-/* Speed Section */
 .speed-card { align-items: center; text-align: center; }
 #speed {
   font-size: clamp(68px, 10vw, 112px);
@@ -222,7 +211,6 @@ main {
 }
 .unit { font-size: clamp(16px, 1.9vw, 22px); color: var(--muted); }
 
-/* Compass Wheel */
 .compass-box { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 8px 0; }
 .compass-ring {
   width: clamp(48px, 5vw, 64px);
@@ -235,21 +223,12 @@ main {
   color: var(--accent);
 }
 
-/* Graphical tilt indicators */
-.tilt-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+.tilt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .tilt-panel { min-width: 0; text-align: center; }
 .tilt-gauge {
-  position: relative;
-  height: 86px;
-  margin-top: 5px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: rgba(0,0,0,0.05);
-  overflow: hidden;
+  position: relative; height: 86px; margin-top: 5px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: rgba(0,0,0,0.05); overflow: hidden;
 }
 .tilt-track {
   position: absolute; left: 50%; top: 9px; bottom: 9px; width: 2px;
@@ -271,9 +250,7 @@ main {
   border-radius: 50%; background: var(--text); border: 2px solid var(--accent);
   transform: translate(-50%, -50%);
 }
-.tilt-end {
-  position: absolute; font-size: 9px; color: var(--muted); font-weight: 700; letter-spacing: .4px;
-}
+.tilt-end { position: absolute; font-size: 9px; color: var(--muted); font-weight: 700; letter-spacing: .4px; }
 .tilt-end.top { top: 3px; left: 50%; transform: translateX(-50%); }
 .tilt-end.bottom { bottom: 3px; left: 50%; transform: translateX(-50%); }
 .tilt-end.left { left: 4px; top: 50%; transform: translateY(-50%); }
@@ -298,11 +275,9 @@ main {
 .row { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
 
 .notice {
-  font-size: clamp(12px, 1.25vw, 16px);
-  color: var(--muted);
-  background: rgba(0,0,0,0.03);
-  padding: 9px; border-radius: 6px; border: 1px solid var(--line);
-  text-align: center; line-height: 1.3;
+  font-size: clamp(12px, 1.25vw, 16px); color: var(--muted);
+  background: rgba(0,0,0,0.03); padding: 9px; border-radius: 6px;
+  border: 1px solid var(--line); text-align: center; line-height: 1.3;
 }
 
 #map {
@@ -323,43 +298,25 @@ footer.hidden-widget { display: none !important; }
 .tile b { display: block; font-size: clamp(15px, 1.8vw, 22px); margin-top: 2px; }
 .tile span { font-size: clamp(11px, 1.15vw, 15px); color: var(--muted); }
 
-/* PAGE 2: Driver Hub Layout */
 .driver-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
 .status-box { text-align: center; padding: 20px; }
 .huge-text { font-size: clamp(38px, 5vw, 62px); font-weight: 800; color: var(--accent); }
 
-/* PAGE 3: Expense Calculator Layout */
 .calc-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; flex: 1; }
 .calc-display {
-  background: var(--panel);
-  color: var(--accent);
-  font-size: 36px;
-  font-weight: 700;
-  padding: 14px 16px;
-  border-radius: 8px;
-  text-align: right;
-  margin-bottom: 8px;
-  border: 1px solid var(--line);
+  background: var(--panel); color: var(--accent); font-size: 36px;
+  font-weight: 700; padding: 14px 16px; border-radius: 8px; text-align: right;
+  margin-bottom: 8px; border: 1px solid var(--line);
 }
 .num-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .num-btn {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  color: var(--text);
-  font-size: 24px;
-  padding: 16px;
-  border-radius: 8px;
-  cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line); color: var(--text);
+  font-size: 24px; padding: 16px; border-radius: 8px; cursor: pointer;
 }
 .cat-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
 .cat-btn {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  color: var(--text);
-  padding: 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
+  background: var(--panel); border: 1px solid var(--line); color: var(--text);
+  padding: 14px; border-radius: 8px; cursor: pointer; font-size: 16px;
   display: flex; align-items: center; justify-content: center; gap: 4px;
 }
 
@@ -371,7 +328,6 @@ footer.hidden-widget { display: none !important; }
 }
 .btn-del { background: transparent; border: none; color: var(--danger); font-weight: bold; cursor: pointer; padding: 2px 6px; font-size: 18px; }
 
-/* PAGE 4: Trip & Fuel Layout */
 .trip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
 .checklist-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
 .chk-item {
@@ -389,7 +345,6 @@ footer.hidden-widget { display: none !important; }
   color: var(--text); padding: 11px 13px; border-radius: 6px; font-size: 17px;
 }
 
-/* PAGE 5: Location */
 .location-grid { display: grid; grid-template-columns: 1.05fr 1.95fr; gap: 12px; flex: 1; min-height: 0; }
 .location-main { justify-content: flex-start; text-align: left; }
 .location-name { font-size: clamp(30px, 4.4vw, 58px); font-weight: 800; line-height: 1.05; color: var(--accent); overflow-wrap: anywhere; }
@@ -406,7 +361,6 @@ footer.hidden-widget { display: none !important; }
 .location-updated { margin-top:auto; color:var(--muted); font-size:clamp(11px,1.15vw,15px); text-align:right; }
 .location-loading { text-align:center; color:var(--muted); font-size:clamp(16px,1.8vw,22px); padding:25px 10px; }
 
-/* PAGE 6: Settings / Widget Management */
 .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
 .widget-toggle-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .widget-toggle-item {
@@ -427,7 +381,6 @@ footer.hidden-widget { display: none !important; }
 input:checked + .slider { background-color: var(--accent); }
 input:checked + .slider:before { transform: translateX(22px); }
 
-/* POPUP (DEPARTURE MODAL) */
 .modal-overlay {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center;
@@ -445,7 +398,6 @@ input:checked + .slider:before { transform: translateX(22px); }
 }
 .modal-close-btn:hover { color: var(--danger); }
 
-/* Responsive */
 @media (max-width: 850px) {
   .dashboard-container { width: 92vw; }
   main, .driver-grid, .calc-grid, .trip-grid, .location-grid, .settings-grid { grid-template-columns: 1fr; }
@@ -484,7 +436,6 @@ input:checked + .slider:before { transform: translateX(22px); }
       <div id="date">—</div>
     </div>
 
-    <!-- Κουμπιά Πλοήγησης Σελίδων -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchPage('p1', this)">🚗 Όργανα</button>
       <button class="tab-btn" onclick="switchPage('p2', this)">☕ Οδηγός</button>
@@ -495,7 +446,6 @@ input:checked + .slider:before { transform: translateX(22px); }
     </div>
 
     <div class="header-actions">
-      <!-- Επιλογέας Θέματος -->
       <select id="themeSelect" class="theme-select" onchange="changeTheme(this.value)">
         <option value="theme-day">☀️ DAY</option>
         <option value="theme-dusk">🌆 DUSK</option>
@@ -756,7 +706,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     </div>
   </div>
 
-  <!-- ==================== ΣΕΛΙΔΑ 6: ΡΥΘΜΙΣΕΙΣ & WIDGETS ==================== -->
+  <!-- ==================== ΣΕΛΙΔΑ 6: ΡΥΘΜΙΣΕΙΣ ==================== -->
   <div id="p6" class="page-content">
     <div class="settings-grid">
       <section class="card">
@@ -800,7 +750,6 @@ function checkDeparturePopup() {
   const today = new Date().toDateString();
   const lastLaunch = localStorage.getItem("last_launch_date");
 
-  // Εμφανίζεται μόνο την πρώτη φορά της ημέρας
   if (lastLaunch !== today) {
     localStorage.setItem("last_launch_date", today);
     showDeparturePopup();
@@ -811,16 +760,13 @@ let popupInterval;
 function showDeparturePopup() {
   const modal = $("departureModal");
   modal.classList.add("active");
-  
   let secondsLeft = 10;
   $("popupTimer").textContent = secondsLeft;
 
   popupInterval = setInterval(() => {
     secondsLeft--;
     $("popupTimer").textContent = secondsLeft;
-    if (secondsLeft <= 0) {
-      closeDeparturePopup();
-    }
+    if (secondsLeft <= 0) closeDeparturePopup();
   }, 1000);
 }
 
@@ -829,7 +775,7 @@ function closeDeparturePopup() {
   $("departureModal").classList.remove("active");
 }
 
-// ==================== 2. ΘΕΜΑΤΑ ΕΜΦΑΝΙΣΗΣ (THEMES) ====================
+// ==================== 2. ΘΕΜΑΤΑ ΕΜΦΑΝΙΣΗΣ ====================
 function changeTheme(themeName) {
   document.body.className = themeName;
   $("themeSelect").value = themeName;
@@ -848,7 +794,6 @@ function toggleWidget(widgetId, isVisible) {
   if (isVisible) el.classList.remove("hidden-widget");
   else el.classList.add("hidden-widget");
 
-  // Αποθήκευση στο localStorage
   const widgetStates = JSON.parse(localStorage.getItem("widget_states") || "{}");
   widgetStates[widgetId] = isVisible;
   localStorage.setItem("widget_states", JSON.stringify(widgetStates));
@@ -989,7 +934,7 @@ async function sensors() {
 }
 $("start").onclick = sensors;
 
-// ==================== 8. ΔΕΙΚΤΗΣ ΚΟΠΩΣΗΣ ====================
+// ==================== 8. ΔΕИКΤΗΣ ΚΟΠΩΣΗΣ ====================
 let driveSeconds = 0;
 setInterval(() => {
   driveSeconds++;
@@ -1062,7 +1007,7 @@ function renderExpenses() {
 }
 renderExpenses();
 
-// ==================== 10. CHECKLIST & ΚΑΥΣΙΜΑ (LOCALSTORAGE) ====================
+// ==================== 10. CHECKLIST & ΚΑΥΣΙΜΑ ====================
 function updateChecklistProgress() {
   const chks = document.querySelectorAll('.checklist-group input[type="checkbox"]');
   let checkedCount = 0;
@@ -1149,35 +1094,164 @@ async function weather() {
 }
 setInterval(weather, 60000); weather();
 
-// ==================== 12. ΤΟΠΟΘΕΣΙΑ (GEOLOCATION API) ====================
+// ==================== 12. ΑΝΑΛΥΤΙΚΕΣ ΠΛΗΡΟΦΟΡΙΕΣ ΤΟΠΟΘΕΣΙΑΣ (WIKIPEDIA & WIKIDATA) ====================
 let lastInfoLat = null, lastInfoLon = null, locationRequestBusy = false;
+
+function formatPopulation(n) {
+  if (n == null || n === "") return "Δεν βρέθηκε";
+  const num = Number(n);
+  return Number.isFinite(num) ? num.toLocaleString("el-GR") : String(n);
+}
+
+async function fetchJson(url, options = {}) {
+  const res = await fetch(url, options);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+function getLatestPopulation(claims) {
+  const valid = (claims || []).filter(c =>
+    c?.mainsnak?.snaktype === "value" &&
+    c?.mainsnak?.datavalue?.value?.amount != null
+  );
+  if (!valid.length) return null;
+
+  valid.sort((a, b) => {
+    const getYear = c => {
+      const q = c.qualifiers?.P585?.[0]?.datavalue?.value?.time;
+      const m = q ? String(q).match(/(\d{4})/) : null;
+      return m ? Number(m[1]) : 0;
+    };
+    return getYear(b) - getYear(a);
+  });
+
+  const amount = String(valid[0].mainsnak.datavalue.value.amount).replace(/^\+/, "");
+  const n = Number(amount);
+  return Number.isFinite(n) ? n : null;
+}
+
+async function getWikidataEntity(qid) {
+  if (!qid) return null;
+  try {
+    const data = await fetchJson(`https://www.wikidata.org/wiki/Special:EntityData/${encodeURIComponent(qid)}.json`);
+    return data.entities?.[qid] || null;
+  } catch (_) { return null; }
+}
+
+async function findPlaceWikidata(place, municipality, lat, lon, geo) {
+  const directQid = geo?.extratags?.wikidata || geo?.namedetails?.wikidata;
+  if (directQid) return directQid;
+
+  const parts = [place, municipality, "Ελλάδα"].filter(Boolean);
+  const q = encodeURIComponent(parts.join(", "));
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${q}&limit=8&addressdetails=1&extratags=1&namedetails=1&accept-language=el`;
+    const results = await fetchJson(url, { headers: { "Accept": "application/json" } });
+
+    const scored = results
+      .map(r => {
+        const rqid = r.extratags?.wikidata || r.namedetails?.wikidata || null;
+        const d = Number.isFinite(Number(r.lat)) && Number.isFinite(Number(r.lon))
+          ? getDistance(lat, lon, Number(r.lat), Number(r.lon)) : 999999;
+        const name = String(r.name || "").toLowerCase();
+        const target = String(place || "").toLowerCase();
+        let score = 0;
+        if (rqid) score += 1000;
+        if (name === target) score += 500;
+        if (["village", "town", "city", "hamlet", "suburb"].includes(r.type)) score += 100;
+        score -= Math.min(d, 100000) / 1000;
+        return { r, rqid, score };
+      })
+      .filter(x => x.rqid)
+      .sort((a, b) => b.score - a.score);
+
+    return scored[0]?.rqid || null;
+  } catch (_) { return null; }
+}
+
+async function getWikipediaForQid(qid, place) {
+  const entity = await getWikidataEntity(qid);
+  const title = entity?.sitelinks?.elwiki?.title;
+
+  if (title) {
+    try {
+      const api = `https://el.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=1&explaintext=1&exsentences=4&redirects=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+      const data = await fetchJson(api);
+      const pages = data.query?.pages ? Object.values(data.query.pages) : [];
+      const page = pages[0];
+      if (page && !page.missing) return { page, entity, title };
+    } catch (_) {}
+  }
+
+  try {
+    const query = encodeURIComponent(`${place}`);
+    const api = `https://el.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrlimit=5&prop=extracts|pageprops&exintro=1&explaintext=1&exsentences=4&format=json&origin=*`;
+    const data = await fetchJson(api);
+    const pages = data.query?.pages ? Object.values(data.query.pages) : [];
+    const page = pages.find(x => !x.missing && !/αποσαφήνιση|αποσαφήνισης|disambiguation/i.test(String(x.title || ""))) || pages[0];
+    if (page) return { page, entity, title: page.title };
+  } catch (_) {}
+
+  return { page: null, entity, title: null };
+}
 
 async function loadLocationInfo(lat, lon, altitude) {
   if (locationRequestBusy) return;
   if (lastInfoLat !== null && getDistance(lastInfoLat, lastInfoLon, lat, lon) < 1.5) return;
-  locationRequestBusy = true;
 
+  locationRequestBusy = true;
   try {
-    const geo = await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=el`)).json();
+    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=el`;
+    const geo = await fetchJson(geoUrl, { headers: { "Accept": "application/json" } });
     const a = geo.address || {};
-    const place = a.village || a.town || a.city || a.hamlet || a.suburb || "Άγνωστη περιοχή";
-    const municipality = a.municipality || a.county || "";
+
+    const place = a.village || a.town || a.city || a.hamlet || a.suburb || a.neighbourhood || "Άγνωστη περιοχή";
+    const municipality = a.municipality || a.city_district || "";
+    const county = a.county || a.state_district || "";
+    const region = municipality || county || a.state || a.region || "Ελλάδα";
 
     $("placeName").textContent = place;
-    $("placeRegion").textContent = municipality ? `Δήμος ${municipality}` : "Ελλάδα";
+    $("placeRegion").textContent = municipality ? `Δήμος ${municipality}` : region;
     $("placeAltitude").textContent = altitude == null ? "—" : Math.round(altitude) + " m";
     $("placeCoords").textContent = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
-    $("placeArea").textContent = municipality || "—";
-    $("placePopulation").textContent = "Καταγεγραμμένος";
+    $("placeArea").textContent = municipality || county || "—";
+    $("placePopulation").textContent = "Αναζήτηση…";
 
     $("locationLoading").style.display = "none";
     $("locationContent").style.display = "block";
     $("locationTitle").textContent = `Για ${place}`;
-    $("locationText").textContent = `Βρίσκεστε στην περιοχή ${place}. Οι πληροφορίες ενημερώνονται αυτόματα μέσω GPS.`;
+    $("locationText").textContent = "Αναζήτηση σύντομων πληροφοριών…";
 
-    lastInfoLat = lat; lastInfoLon = lon;
+    const qid = await findPlaceWikidata(place, municipality || county, lat, lon, geo);
+    const entity = await getWikidataEntity(qid);
+
+    let population = getLatestPopulation(entity?.claims?.P1082);
+    if (population == null && geo?.extratags?.population) {
+      const n = Number(String(geo.extratags.population).replace(/[^0-9.-]/g, ""));
+      if (Number.isFinite(n)) population = n;
+    }
+    $("placePopulation").textContent = formatPopulation(population);
+
+    const wiki = await getWikipediaForQid(qid, place);
+    if (wiki.page?.extract) {
+      let text = wiki.page.extract.replace(/\s+/g, " ").trim();
+      if (text.length > 500) text = text.slice(0, 497).replace(/\s+\S*$/, "") + "…";
+      $("locationText").textContent = text;
+      $("locationTitle").textContent = `Για ${place}`;
+    } else if (population != null) {
+      $("locationText").textContent = `Ο οικισμός ${place} έχει καταγεγραμμένο πληθυσμό ${formatPopulation(population)} κατοίκων. Δεν βρέθηκε διαθέσιμη σύντομη εγκυκλοπαιδική περιγραφή.`;
+    } else {
+      $("locationText").textContent = `Βρίσκεστε στην περιοχή ${place}. Δεν βρέθηκαν διαθέσιμα εγκυκλοπαιδικά στοιχεία για το συγκεκριμένο σημείο.`;
+    }
+
+    lastInfoLat = lat;
+    lastInfoLon = lon;
     $("locationUpdated").textContent = `Ενημέρωση: ${new Date().toLocaleTimeString("el-GR",{hour:"2-digit",minute:"2-digit"})}`;
-  } catch (err) {} finally { locationRequestBusy = false; }
+  } catch (err) {
+    $("locationLoading").textContent = "Δεν ήταν δυνατή η ανάκτηση πληροφοριών για την περιοχή.";
+  } finally {
+    locationRequestBusy = false;
+  }
 }
 
 function copySOS() {
@@ -1186,7 +1260,6 @@ function copySOS() {
   navigator.clipboard.writeText(text).then(() => alert("Οι συντεταγμένες SOS αντιγράφηκαν!"));
 }
 
-// Αρχική φόρτωση ρυθμίσεων & μνήμης
 loadSavedTheme();
 loadWidgetStates();
 loadChecklist();
