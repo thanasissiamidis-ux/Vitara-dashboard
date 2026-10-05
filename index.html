@@ -1008,80 +1008,176 @@ function formatPopulation(n) {
   return Number.isFinite(num) ? num.toLocaleString("el-GR") : String(n);
 }
 
+async function fetchJson(url, options = {}) {
+  const res = await fetch(url, options);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+function getLatestPopulation(claims) {
+  const valid = (claims || []).filter(c =>
+    c?.mainsnak?.snaktype === "value" &&
+    c?.mainsnak?.datavalue?.value?.amount != null
+  );
+  if (!valid.length) return null;
+
+  // Προτιμάμε την πιο πρόσφατη απογραφή/χρονολογία, όχι απλώς το πρώτο claim.
+  valid.sort((a, b) => {
+    const getYear = c => {
+      const q = c.qualifiers?.P585?.[0]?.datavalue?.value?.time;
+      const m = q ? String(q).match(/(\d{4})/) : null;
+      return m ? Number(m[1]) : 0;
+    };
+    return getYear(b) - getYear(a);
+  });
+
+  const amount = String(valid[0].mainsnak.datavalue.value.amount).replace(/^\+/, "");
+  const n = Number(amount);
+  return Number.isFinite(n) ? n : null;
+}
+
+async function getWikidataEntity(qid) {
+  if (!qid) return null;
+  try {
+    const data = await fetchJson(`https://www.wikidata.org/wiki/Special:EntityData/${encodeURIComponent(qid)}.json`);
+    return data.entities?.[qid] || null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function findPlaceWikidata(place, municipality, lat, lon, geo) {
+  // 1. Ο καλύτερος τρόπος: το ίδιο το OSM/Nominatim δίνει Wikidata ID.
+  const directQid = geo?.extratags?.wikidata || geo?.namedetails?.wikidata;
+  if (directQid) return directQid;
+
+  // 2. Δεύτερη προσπάθεια: αναζήτηση του οικισμού μαζί με Δήμο/Π.Ε.
+  const parts = [place, municipality, "Δράμα", "Ελλάδα"].filter(Boolean);
+  const q = encodeURIComponent(parts.join(", "));
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${q}&limit=8&addressdetails=1&extratags=1&namedetails=1&accept-language=el`;
+    const results = await fetchJson(url, { headers: { "Accept": "application/json" } });
+
+    // Προτιμάμε οικισμό με Wikidata και κοντά στις τρέχουσες συντεταγμένες.
+    const scored = results
+      .map(r => {
+        const rqid = r.extratags?.wikidata || r.namedetails?.wikidata || null;
+        const d = Number.isFinite(Number(r.lat)) && Number.isFinite(Number(r.lon))
+          ? getDistance(lat, lon, Number(r.lat), Number(r.lon)) : 999999;
+        const name = String(r.name || "").toLowerCase();
+        const target = String(place || "").toLowerCase();
+        let score = 0;
+        if (rqid) score += 1000;
+        if (name === target) score += 500;
+        if (["village", "town", "city", "hamlet", "suburb"].includes(r.type)) score += 100;
+        score -= Math.min(d, 100000) / 1000;
+        return { r, rqid, score };
+      })
+      .filter(x => x.rqid)
+      .sort((a, b) => b.score - a.score);
+
+    return scored[0]?.rqid || null;
+  } catch (_) {
+    return null;
+  }
+}
+
+async function getWikipediaForQid(qid, place) {
+  const entity = await getWikidataEntity(qid);
+  const title = entity?.sitelinks?.elwiki?.title;
+
+  // Exact Wikipedia article from Wikidata, avoiding ambiguous generic searches.
+  if (title) {
+    try {
+      const api = `https://el.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=1&explaintext=1&exsentences=4&redirects=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+      const data = await fetchJson(api);
+      const pages = data.query?.pages ? Object.values(data.query.pages) : [];
+      const page = pages[0];
+      if (page && !page.missing) {
+        return { page, entity, title };
+      }
+    } catch (_) {}
+  }
+
+  // Τελικό fallback: ψάχνουμε με όνομα + Δήμος, όχι μόνο με το σκέτο όνομα.
+  try {
+    const query = encodeURIComponent(`${place} Δράμας`);
+    const api = `https://el.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrlimit=5&prop=extracts|pageprops&exintro=1&explaintext=1&exsentences=4&format=json&origin=*`;
+    const data = await fetchJson(api);
+    const pages = data.query?.pages ? Object.values(data.query.pages) : [];
+    const page = pages.find(x => !x.missing && !/αποσαφήνιση|αποσαφήνισης|disambiguation/i.test(String(x.title || ""))) || pages[0];
+    if (page) return { page, entity, title: page.title };
+  } catch (_) {}
+
+  return { page: null, entity, title: null };
+}
+
 async function loadLocationInfo(lat, lon, altitude) {
   if (locationRequestBusy) return;
   if (lastInfoLat !== null && getDistance(lastInfoLat, lastInfoLon, lat, lon) < 1.5) return;
 
   locationRequestBusy = true;
   try {
-    // Reverse geocoding: βρίσκουμε το χωριό/οικισμό/πόλη όπου βρίσκεται το αυτοκίνητο.
-    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&accept-language=el`;
-    const geoRes = await fetch(geoUrl, { headers: { "Accept": "application/json" } });
-    if (!geoRes.ok) throw new Error("reverse geocoding failed");
-    const geo = await geoRes.json();
+    // Reverse geocoding: εντοπίζουμε τον πραγματικό οικισμό από τις συντεταγμένες.
+    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=el`;
+    const geo = await fetchJson(geoUrl, { headers: { "Accept": "application/json" } });
     const a = geo.address || {};
 
-    const place = a.village || a.town || a.city || a.municipality || a.hamlet ||
-                  a.suburb || a.neighbourhood || a.county || "Άγνωστη περιοχή";
-    const region = a.municipality || a.county || a.state || a.region || "Ελλάδα";
+    // Για την ταυτότητα του τόπου προτιμάμε village/town/city. Δεν χρησιμοποιούμε
+    // municipality/county ως «οικισμό», γιατί αυτό δημιουργεί λάθος πληθυσμούς.
+    const place = a.village || a.town || a.city || a.hamlet || a.suburb || a.neighbourhood || "Άγνωστη περιοχή";
+    const municipality = a.municipality || a.city_district || "";
+    const county = a.county || a.state_district || "";
+    const region = municipality || county || a.state || a.region || "Ελλάδα";
 
     $("placeName").textContent = place;
-    $("placeRegion").textContent = region;
+    $("placeRegion").textContent = municipality ? `Δήμος ${municipality}` : region;
     $("placeAltitude").textContent = altitude == null ? "—" : Math.round(altitude) + " m";
     $("placeCoords").textContent = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
-    $("placeArea").textContent = a.village || a.town || a.city ? (a.city || a.town || a.village) : "—";
+    $("placeArea").textContent = municipality || county || "—";
+    $("placePopulation").textContent = "Αναζήτηση…";
 
     $("locationLoading").style.display = "none";
     $("locationContent").style.display = "block";
     $("locationTitle").textContent = `Για ${place}`;
     $("locationText").textContent = "Αναζήτηση σύντομων πληροφοριών…";
 
-    // Wikipedia: σύντομη περιγραφή του συγκεκριμένου τόπου.
-    const wikiQuery = encodeURIComponent(place);
-    const wikiUrl = `https://el.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${wikiQuery}&gsrlimit=1&prop=extracts&exintro=1&explaintext=1&exsentences=3&format=json&origin=*`;
-    const wikiRes = await fetch(wikiUrl);
-    const wiki = await wikiRes.json();
-    const pages = wiki.query?.pages ? Object.values(wiki.query.pages) : [];
-    const page = pages[0];
+    // Πρώτα βρίσκουμε το Wikidata ID του ΣΥΓΚΕΚΡΙΜΕΝΟΥ οικισμού.
+    const qid = await findPlaceWikidata(place, municipality || county, lat, lon, geo);
+    const entity = await getWikidataEntity(qid);
 
-    if (page?.extract) {
-      let text = page.extract.replace(/\s+/g, " ").trim();
-      if (text.length > 430) text = text.slice(0, 427).replace(/\s+\S*$/, "") + "…";
-      $("locationText").textContent = text;
-      $("locationTitle").textContent = `Για ${place}`;
-    } else {
-      $("locationText").textContent =
-        `Βρίσκεστε στην περιοχή ${place}. Δεν βρέθηκε σύντομη εγκυκλοπαιδική περιγραφή για το συγκεκριμένο σημείο.`;
-    }
-
-    // Προσπαθούμε να πάρουμε πληθυσμό από Wikidata μέσω Wikipedia page.
-    let population = null;
-    if (page?.pageid) {
-      try {
-        const wdUrl = `https://el.wikipedia.org/w/api.php?action=query&prop=pageprops&pageids=${page.pageid}&format=json&origin=*`;
-        const wdRes = await fetch(wdUrl);
-        const wd = await wdRes.json();
-        const qid = wd.query?.pages?.[page.pageid]?.pageprops?.wikibase_item;
-        if (qid) {
-          const entRes = await fetch(`https://www.wikidata.org/wiki/Special:EntityData/${qid}.json`);
-          const ent = await entRes.json();
-          const claims = ent.entities?.[qid]?.claims?.P1082 || [];
-          const preferred = claims.find(x => x.rank === "preferred") || claims[0];
-          population = preferred?.mainsnak?.datavalue?.value?.amount?.replace("+","") || null;
-        }
-      } catch (_) {}
+    // Πληθυσμός: παίρνουμε την πιο πρόσφατη χρονολογημένη τιμή P1082.
+    let population = getLatestPopulation(entity?.claims?.P1082);
+    if (population == null && geo?.extratags?.population) {
+      const n = Number(String(geo.extratags.population).replace(/[^0-9.-]/g, ""));
+      if (Number.isFinite(n)) population = n;
     }
     $("placePopulation").textContent = formatPopulation(population);
+
+    // Ακριβής ελληνική σελίδα Wikipedia από το Wikidata, όχι γενική αναζήτηση.
+    const wiki = await getWikipediaForQid(qid, place);
+    if (wiki.page?.extract) {
+      let text = wiki.page.extract.replace(/\s+/g, " ").trim();
+      if (text.length > 500) text = text.slice(0, 497).replace(/\s+\S*$/, "") + "…";
+      $("locationText").textContent = text;
+      $("locationTitle").textContent = `Για ${place}`;
+    } else if (population != null) {
+      $("locationText").textContent = `Ο οικισμός ${place} έχει καταγεγραμμένο πληθυσμό ${formatPopulation(population)} κατοίκων. Δεν βρέθηκε διαθέσιμη σύντομη εγκυκλοπαιδική περιγραφή.`;
+    } else {
+      $("locationText").textContent = `Βρίσκεστε στην περιοχή ${place}. Δεν βρέθηκαν διαθέσιμα εγκυκλοπαιδικά στοιχεία για το συγκεκριμένο σημείο.`;
+    }
 
     lastInfoLat = lat;
     lastInfoLon = lon;
     $("locationUpdated").textContent = `Ενημέρωση: ${new Date().toLocaleTimeString("el-GR",{hour:"2-digit",minute:"2-digit"})}`;
   } catch (err) {
+    console.error("Location info error:", err);
     $("locationLoading").textContent = "Δεν ήταν δυνατή η ανάκτηση πληροφοριών για την περιοχή.";
   } finally {
     locationRequestBusy = false;
   }
 }
+
 function copySOS() {
   if (!lastPos) return alert("Δεν υπάρχει διαθέσιμο σήμα GPS ακόμα.");
   const text = `SOS! Θέση: https://maps.google.com/?q=${lastPos.coords.latitude},${lastPos.coords.longitude}`;
