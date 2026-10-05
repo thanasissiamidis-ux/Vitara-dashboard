@@ -483,7 +483,10 @@ input:checked + .slider:before { transform: translateX(22px); }
 
       <section class="card" id="widget-tilt">
         <div>
-          <div class="label">Αισθητήρες Κίνησης</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="label" style="text-align:left;">Αισθητήρες Κλίσης</div>
+            <button class="btn" style="font-size:11px; padding:4px 8px;" onclick="calibrateSensors()">🎯 Βαθμονόμηση</button>
+          </div>
           <div class="tilt-grid" style="margin-top:8px">
             <div class="tilt-panel">
               <div class="label">Πρόσθια / Πίσω</div>
@@ -494,6 +497,7 @@ input:checked + .slider:before { transform: translateX(22px); }
                 <div class="tilt-end top">ΕΜΠΡΟΣ</div>
                 <div class="tilt-end bottom">ΠΙΣΩ</div>
               </div>
+              <div class="value" id="pitchDegrees" style="font-size:16px; margin-top:4px; color:var(--accent);">0°</div>
             </div>
             <div class="tilt-panel">
               <div class="label">Αριστερά / Δεξιά</div>
@@ -504,6 +508,7 @@ input:checked + .slider:before { transform: translateX(22px); }
                 <div class="tilt-end left">ΑΡΙΣΤ.</div>
                 <div class="tilt-end right">ΔΕΞΙΑ</div>
               </div>
+              <div class="value" id="rollDegrees" style="font-size:16px; margin-top:4px; color:var(--accent);">0°</div>
             </div>
           </div>
           <div class="row" style="margin-top:8px">
@@ -511,7 +516,7 @@ input:checked + .slider:before { transform: translateX(22px); }
             <div class="metric"><div class="label">Δύναμη G</div><div class="value" id="gforce">—</div></div>
           </div>
         </div>
-        <div class="notice">ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση.</div>
+        <div class="notice">ℹ Τοποθετήστε τη συσκευή στη βάση και πατήστε <b>Βαθμονόμηση</b> για μηδενισμό.</div>
       </section>
 
       <section class="card mapcard" id="widget-map">
@@ -586,7 +591,7 @@ input:checked + .slider:before { transform: translateX(22px); }
           <button class="cat-btn" onclick="addExpense('⛽ Βενζίνη')">⛽ Βενζίνη</button>
           <button class="cat-btn" onclick="addExpense('🍔 Φαγητό')">🍔 Φαγητό</button>
           <button class="cat-btn" onclick="addExpense('🛣️ Διόδια')">🛣️ Διόδια</button>
-          <button class="cat-btn" onclick="addExpense('📦 Διάφορα')">📦 Διάφορα</button>
+          <button class="cat-btn" onclick="addExpense('📦 Δδιάφορα')">📦 Διάφορα</button>
         </div>
       </section>
 
@@ -888,19 +893,40 @@ if (navigator.geolocation) {
   navigator.geolocation.watchPosition(gpsSuccess, gpsError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 }
 
-// ==================== 7. ΑΙΣΘΗΤΗΡΕΣ ΚΙΝΗΣΗΣ ====================
+// ==================== 7. ΑΙΣΘΗΤΗΡΕΣ ΚΙΝΗΣΗΣ & ΒΑΘΜΟΝΟΜΗΣΗ ====================
 let totalGPoints = 100, sensorsStarted = false;
+let pitchOffset = 0, rollOffset = 0;
+let currentRawBeta = 0, currentRawGamma = 0;
+
+function calibrateSensors() {
+  pitchOffset = currentRawBeta;
+  rollOffset = currentRawGamma;
+  localStorage.setItem("pitch_offset", pitchOffset);
+  localStorage.setItem("roll_offset", rollOffset);
+  alert("Η βαθμονόμηση ολοκληρώθηκε επιτυχώς για τη σημερινή θέση της συσκευής!");
+}
+
+function loadCalibration() {
+  pitchOffset = parseFloat(localStorage.getItem("pitch_offset")) || 0;
+  rollOffset = parseFloat(localStorage.getItem("roll_offset")) || 0;
+}
 
 function orientation(e) {
   if (e.beta != null) {
-    const pitch = Math.max(-45, Math.min(45, e.beta));
-    const pitchY = (pitch / 45) * 42;
+    currentRawBeta = e.beta;
+    let adjustedPitch = e.beta - pitchOffset;
+    adjustedPitch = Math.max(-45, Math.min(45, adjustedPitch));
+    const pitchY = (adjustedPitch / 45) * 42;
     $("pitchIndicator").style.transform = `translate(-50%, calc(-50% + ${pitchY}px))`;
+    $("pitchDegrees").textContent = Math.round(adjustedPitch) + "°";
   }
   if (e.gamma != null) {
-    const roll = Math.max(-45, Math.min(45, e.gamma));
-    const rollX = (roll / 45) * 42;
+    currentRawGamma = e.gamma;
+    let adjustedRoll = e.gamma - rollOffset;
+    adjustedRoll = Math.max(-45, Math.min(45, adjustedRoll));
+    const rollX = (adjustedRoll / 45) * 42;
     $("rollIndicator").style.transform = `translate(calc(-50% + ${rollX}px), -50%)`;
+    $("rollDegrees").textContent = Math.round(adjustedRoll) + "°";
   }
 }
 function motion(e) {
@@ -1264,6 +1290,7 @@ loadSavedTheme();
 loadWidgetStates();
 loadChecklist();
 loadFuelSettings();
+loadCalibration();
 checkDeparturePopup();
 </script>
 </body>
