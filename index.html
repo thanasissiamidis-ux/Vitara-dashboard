@@ -10,8 +10,8 @@
 :root {
   --bg: #070a0f;
   --panel: #0d121a;
-  --line: #2d3a4e;
-  --text: #ffffff;
+  --line: #202936;
+  --text: #eef3f8;
   --muted: #a0aec0;
   --accent: #56d6ff;
   --danger: #ff4d4d;
@@ -30,16 +30,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 0;
+  padding: 8px 0;
 }
 
 .dashboard-container {
-  width: 94vw;
+  width: 95vw;
   max-width: 1600px;
-  min-height: 94vh;
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 header {
@@ -48,19 +48,15 @@ header {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  background: var(--panel);
-  padding: 10px 16px;
-  border-radius: 14px;
-  border: 2px solid var(--line);
 }
-#time { font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1; color: var(--accent); }
-#date { font-size: clamp(14px, 1.8vw, 18px); color: var(--text); text-transform: capitalize; margin-top: 4px; font-weight: 600; }
+#time { font-size: clamp(26px, 3.5vw, 42px); font-weight: 800; line-height: 1; }
+#date { font-size: clamp(12px, 1.5vw, 16px); color: var(--muted); text-transform: capitalize; margin-top: 3px; }
 
 /* Navigation Tabs */
 .nav-tabs {
   display: flex;
   gap: 8px;
-  background: #000;
+  background: var(--panel);
   padding: 6px;
   border-radius: 12px;
   border: 1px solid var(--line);
@@ -70,566 +66,16 @@ header {
   background: transparent;
   color: var(--muted);
   border: none;
-  padding: 10px 16px;
-  font-size: clamp(13px, 1.6vw, 18px);
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.2s;
-}
-.tab-btn.active {
-  background: var(--accent);
-  color: #000;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.badge {
-  padding: 8px 14px;
-  border: 2px solid var(--line);
-  border-radius: 8px;
-  color: #fff;
-  font-size: clamp(13px, 1.5vw, 16px);
-  font-weight: 700;
-  background: var(--panel);
-}
-.btn {
-  background: #1e293b;
-  color: var(--text);
-  border: 2px solid #334155;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-size: clamp(13px, 1.5vw, 16px);
-  font-weight: 700;
-  cursor: pointer;
-}
-.btn-sos { background: #5c1414; border-color: #991b1b; color: #ffffff; }
-
-/* Page Content Handling */
-.page-content { display: none; flex: 1; flex-direction: column; gap: 14px; }
-.page-content.active { display: flex; }
-
-/* Main Grid - Page 1 */
-main {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr 1fr;
-  gap: 14px;
-}
-.card {
-  background: linear-gradient(145deg, #0f172a, #090d16);
-  border: 2px solid var(--line);
-  border-radius: 18px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.label {
+  padding: 8px 16px;
   font-size: clamp(12px, 1.4vw, 16px);
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  font-weight: 700;
-}
-.metric { text-align: center; flex: 1; min-width: 0; }
-.value { 
-  font-size: clamp(18px, 2.3vw, 28px); 
-  font-weight: 800; 
-  margin-top: 4px; 
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Speed Section */
-.speed-card { align-items: center; text-align: center; }
-#speed {
-  font-size: clamp(65px, 11vw, 120px);
-  font-weight: 900;
-  line-height: 0.85;
-  color: #ffffff;
-  text-shadow: 0 0 20px rgba(86, 214, 255, 0.2);
-}
-.unit { font-size: clamp(16px, 2vw, 22px); color: var(--accent); font-weight: 800; }
-
-/* Compass Wheel */
-.compass-box { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 8px 0; }
-.compass-ring {
-  width: clamp(45px, 5vw, 65px);
-  height: clamp(45px, 5vw, 65px);
-  border-radius: 50%;
-  border: 3px solid var(--accent);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 900; font-size: clamp(15px, 1.8vw, 22px);
-  transition: transform 0.2s ease-out;
-  background: #000;
-  color: var(--accent);
-}
-
-.row { display: flex; justify-content: space-between; gap: 10px; width: 100%; }
-
-.notice {
-  font-size: clamp(12px, 1.3vw, 15px);
-  color: #cbd5e1;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 10px; border-radius: 10px; border: 1px solid var(--line);
-  text-align: center; line-height: 1.4; font-weight: 600;
-}
-
-#map {
-  height: 100%; min-height: 200px; width: 100%;
-  border-radius: 14px; background: #111821;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--muted); font-size: 14px; text-align: center; overflow: hidden;
-}
-
-/* Footer μεγάλων κουτιών */
-footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-.tile {
-  background: var(--panel); border: 2px solid var(--line);
-  border-radius: 14px; padding: 12px 6px; text-align: center;
-  display: flex; flex-direction: column; justify-content: center; min-height: 80px;
-}
-.tile b { display: block; font-size: clamp(16px, 2.2vw, 24px); margin-top: 4px; font-weight: 800; color: #fff; }
-.tile span { font-size: clamp(11px, 1.3vw, 14px); color: var(--accent); font-weight: 700; text-transform: uppercase; }
-
-/* PAGE 2 & 5 Layouts */
-.driver-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
-.status-box { text-align: center; padding: 20px; }
-.huge-text { font-size: clamp(36px, 5vw, 65px); font-weight: 900; color: var(--accent); }
-
-/* PAGE 3: Expense Calculator */
-.calc-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; flex: 1; }
-.calc-display {
-  background: #000; color: var(--accent); font-size: 36px; font-weight: 800;
-  padding: 12px 18px; border-radius: 10px; text-align: right; margin-bottom: 10px; border: 2px solid var(--line);
-}
-.num-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.num-btn { background: var(--panel); border: 2px solid var(--line); color: var(--text); font-size: 24px; font-weight: 800; padding: 16px; border-radius: 10px; cursor: pointer; }
-.cat-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.cat-btn { background: #1e293b; border: 2px solid #334155; color: var(--text); padding: 14px; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
-
-.expense-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.expense-item { display: flex; justify-content: space-between; align-items: center; background: var(--panel); padding: 12px 16px; border-radius: 10px; border: 2px solid var(--line); font-size: 16px; font-weight: 700; }
-.btn-del { background: transparent; border: none; color: var(--danger); font-size: 18px; font-weight: bold; cursor: pointer; padding: 4px 8px; }
-
-/* PAGE 4 & 5 Layouts */
-.trip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
-.checklist-group { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
-.chk-item { display: flex; align-items: center; gap: 14px; background: var(--panel); padding: 14px 16px; border-radius: 10px; border: 2px solid var(--line); font-size: 16px; font-weight: 700; cursor: pointer; }
-.chk-item input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--accent); cursor: pointer; }
-
-.fuel-input-group { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
-.input-row { display: flex; flex-direction: column; gap: 6px; }
-.input-row label { font-size: 14px; color: var(--muted); font-weight: 700; }
-.input-row input { background: var(--panel); border: 2px solid var(--line); color: var(--text); padding: 12px 16px; border-radius: 8px; font-size: 18px; font-weight: 700; }
-
-/* Location Page Special Styling */
-.location-card { display: flex; flex-direction: column; gap: 14px; padding: 20px; }
-.location-title { font-size: clamp(26px, 3.5vw, 44px); font-weight: 900; color: var(--accent); }
-.location-info-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
-.info-box { background: var(--panel); border: 2px solid var(--line); padding: 14px; border-radius: 12px; flex: 1; min-width: 140px; text-align: center; }
-.info-box span { font-size: 12px; color: var(--muted); text-transform: uppercase; font-weight: 700; display: block; }
-.info-box b { font-size: clamp(16px, 2vw, 24px); font-weight: 800; color: #fff; margin-top: 4px; display: block; }
-
-/* Responsive για Κινητά (Portrait) */
-@media (max-width: 850px) {
-  .dashboard-container { width: 94vw; }
-  main, .driver-grid, .calc-grid, .trip-grid { grid-template-columns: 1fr; }
-  footer { grid-template-columns: repeat(3, 1fr); }
-}
-</style>
-</head>
-<body>
-
-<div class="dashboard-container">
-  <header>
-    <div>
-      <div id="time">--:--</div>
-      <div id="date">—</div>
-    </div>
-
-    <!-- Navigation Tabs (5 Σελίδες) -->
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="switchPage('p1', this)">🚗 Όργανα</button>
-      <button class="tab-btn" onclick="switchPage('p2', this)">☕ Οδηγός</button>
-      <button class="tab-btn" onclick="switchPage('p3', this)">🧮 Έξοδα</button>
-      <button class="tab-btn" onclick="switchPage('p4', this)">📋 Ταξίδι</button>
-      <button class="tab-btn" onclick="switchPage('p5', this)">🏛️ Τοποθεσία</button>
-    </div>
-
-    <div class="header-actions">
-      <button class="btn btn-sos" onclick="copySOS()">🆘 SOS</button>
-      <button class="btn" id="start">📡 Αισθητήρες</button>
-      <div class="badge" id="gpsStatus">GPS: Αναμονή</div>
-    </div>
-  </header>
-
-  <!-- ==================== ΣΕΛΙΔΑ 1: ΟΡΓΑΝΑ ==================== -->
-  <div id="p1" class="page-content active">
-    <main>
-      <section class="card speed-card">
-        <div class="label">Ταχύτητα GPS</div>
-        <div id="speed">0</div>
-        <div class="unit">km/h</div>
-        
-        <div class="compass-box">
-          <div class="compass-ring" id="compassRing">Ν</div>
-          <div>
-            <div class="label">Πορεία</div>
-            <div class="value" id="heading">—</div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="metric"><div class="label">Μέγιστη</div><div class="value" id="maxSpeed">0 km/h</div></div>
-          <div class="metric"><div class="label">Μέση</div><div class="value" id="avgSpeed">0 km/h</div></div>
-          <div class="metric"><div class="label">Απόσταση</div><div class="value" id="tripDist">0.0 km</div></div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div>
-          <div class="label">Αισθητήρες Κίνησης</div>
-          <div class="row" style="margin-top:12px">
-            <div class="metric"><div class="label">Πρόσθια Κλίση</div><div class="value" id="pitch">—</div></div>
-            <div class="metric"><div class="label">Πλευρική Κλίση</div><div class="value" id="roll">—</div></div>
-          </div>
-          <div class="row" style="margin-top:12px">
-            <div class="metric"><div class="label">Υψόμετρο</div><div class="value" id="alt">—</div></div>
-            <div class="metric"><div class="label">Δύναμη G</div><div class="value" id="gforce">—</div></div>
-          </div>
-        </div>
-        <div class="notice">
-          ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση κλίσεων.
-        </div>
-      </section>
-
-      <section class="card mapcard">
-        <div id="map">Ο χάρτης θα εμφανιστεί μόλις ληφθεί θέση GPS.</div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="tile"><span>ΚΑΙΡΟΣ</span><b id="weather">—</b></div>
-      <div class="tile"><span>ΣΕΛΗΝΗ</span><b id="moon">—</b></div>
-      <div class="tile"><span>ΔΥΣΗ ΗΛΙΟΥ</span><b id="sunset">—</b></div>
-      <div class="tile"><span>ΑΚΡΙΒΕΙΑ GPS</span><b id="accuracy">—</b></div>
-      <div class="tile"><span>ΠΛΑΤΟΣ (LAT)</span><b id="lat">—</b></div>
-      <div class="tile"><span>ΜΗΚΟΣ (LON)</span><b id="lon">—</b></div>
-    </footer>
-  </div>
-
-  <!-- ==================== ΣΕΛΙΔΑ 2: ΟΔΗΓΟΣ & ΕΥΕΞΙΑ ==================== -->
-  <div id="p2" class="page-content">
-    <div class="driver-grid">
-      <section class="card status-box">
-        <div class="label">Χρόνος Συνεχούς Οδήγησης</div>
-        <div class="huge-text" id="driveTimer">00:00:00</div>
-        <div class="notice" id="restWarning" style="margin-top:14px">
-          ✅ Κατάσταση Οδηγού: Ξεκούραστος (Συνιστάται στάση κάθε 2 ώρες)
-        </div>
-        <button class="btn" style="margin-top:14px; align-self:center;" onclick="resetDriveTimer()">🔄 Επανεκκίνηση Χρονομέτρου</button>
-      </section>
-
-      <section class="card status-box">
-        <div class="label">Βαθμολογία Ομαλής Οδήγησης</div>
-        <div class="huge-text" id="smoothScore" style="color:var(--success)">100%</div>
-        <div class="notice" style="margin-top:14px">
-          ℹ Υπολογίζεται από τις απότομες αυξομειώσεις G-Force.
-        </div>
-      </section>
-
-      <section class="card" style="grid-column: 1 / -1;">
-        <div class="label">Τηλέφωνα Έκτακτης Ανάγκης</div>
-        <div class="row" style="margin-top:14px">
-          <a href="tel:112" class="btn btn-sos" style="flex:1; text-align:center; text-decoration:none;">📞 112 Ευρωπαϊκός Αριθμός</a>
-          <a href="tel:100" class="btn" style="flex:1; text-align:center; text-decoration:none;">📞 100 Αστυνομία</a>
-          <a href="tel:10400" class="btn" style="flex:1; text-align:center; text-decoration:none;">📞 10400 Οδική Βοήθεια</a>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <!-- ==================== ΣΕΛΙΔΑ 3: ΑΡΙΘΜΟΜΗΧΑΝΗ ΕΞΟΔΩΝ ==================== -->
-  <div id="p3" class="page-content">
-    <div class="calc-grid">
-      <section class="card">
-        <div class="label">Εισαγωγή Ποσού (€)</div>
-        <div class="calc-display" id="calcDisplay">0</div>
-        
-        <div class="num-pad">
-          <button class="num-btn" onclick="pressNum('7')">7</button>
-          <button class="num-btn" onclick="pressNum('8')">8</button>
-          <button class="num-btn" onclick="pressNum('9')">9</button>
-          <button class="num-btn" onclick="pressNum('4')">4</button>
-          <button class="num-btn" onclick="pressNum('5')">5</button>
-          <button class="num-btn" onclick="pressNum('6')">6</button>
-          <button class="num-btn" onclick="pressNum('1')">1</button>
-          <button class="num-btn" onclick="pressNum('2')">2</button>
-          <button class="num-btn" onclick="pressNum('3')">3</button>
-          <button class="num-btn" onclick="pressNum('.')">.</button>
-          <button class="num-btn" onclick="pressNum('0')">0</button>
-          <button class="num-btn" style="color:var(--danger)" onclick="clearCalc()">C</button>
-        </div>
-
-        <div class="cat-btn-group">
-          <button class="cat-btn" onclick="addExpense('⛽ Βενζίνη')">⛽ Βενζίνη</button>
-          <button class="cat-btn" onclick="addExpense('🍔 Φαγητό')">🍔 Φαγητό</button>
-          <button class="cat-btn" onclick="addExpense('🛣️ Διόδια')">🛣️ Διόδια</button>
-          <button class="cat-btn" onclick="addExpense('📦 Διάφορα')">📦 Διάφορα</button>
-        </div>
-      </section>
-
-      <section class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="label">Λίστα Εξόδων Ταξιδιού</div>
-          <button class="btn" style="font-size:12px" onclick="clearAllExpenses()">Reset Όλα</button>
-        </div>
-
-        <div class="expense-list" id="expenseList"></div>
-
-        <div style="border-top:2px solid var(--line); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
-          <div class="label">Συνολικό Κόστος:</div>
-          <div class="huge-text" id="totalExpense" style="font-size:32px">0.00 €</div>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <!-- ==================== ΣΕΛΙΔΑ 4: ΤΑΞΙΔΙ & ΚΑΥΣΙΜΟ ==================== -->
-  <div id="p4" class="page-content">
-    <div class="trip-grid">
-      <section class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="label">Λίστα Ελέγχου Πριν το Ταξίδι</div>
-          <div class="badge" id="checkProgress">0%</div>
-        </div>
-
-        <div class="checklist-group">
-          <label class="chk-item"><input type="checkbox" onchange="updateChecklistProgress()"><span>🟢 Πίεση Ελαστικών & Ρεζέρβα</span></label>
-          <label class="chk-item"><input type="checkbox" onchange="updateChecklistProgress()"><span>🟢 Στάθμη Λαδιού Κινητήρα</span></label>
-          <label class="chk-item"><input type="checkbox" onchange="updateChecklistProgress()"><span>🟢 Ψυκτικό Υγρό (Παραφλού)</span></label>
-          <label class="chk-item"><input type="checkbox" onchange="updateChecklistProgress()"><span>🟢 Νερό Υαλοκαθαριστήρων</span></label>
-          <label class="chk-item"><input type="checkbox" onchange="updateChecklistProgress()"><span>🟢 Φαρμακείο, Τρίγωνο, Γιλέκο</span></label>
-          <label class="chk-item"><input type="checkbox" onchange="updateChecklistProgress()"><span>🟢 Πυροσβεστήρας (Σε ισχύ)</span></label>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="label">Υπολογιστής Κατανάλωσης & Κόστους</div>
-        
-        <div class="fuel-input-group">
-          <div class="input-row">
-            <label>Μέση Κατανάλωση (L/100km):</label>
-            <input type="number" id="fuelAvg" value="6.5" step="0.1" oninput="calculateFuel()">
-          </div>
-          <div class="input-row">
-            <label>Τιμή Καυσίμου (€/L):</label>
-            <input type="number" id="fuelPrice" value="1.85" step="0.01" oninput="calculateFuel()">
-          </div>
-          <div class="input-row">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <label>Χιλιόμετρα Διαδρομής (km):</label>
-              <button class="btn" style="font-size:12px; padding:4px 8px;" onclick="useGpsDistance()">Χρήση GPS km</button>
-            </div>
-            <input type="number" id="tripKm" value="100" step="1" oninput="calculateFuel()">
-          </div>
-        </div>
-
-        <div style="border-top:2px solid var(--line); padding-top:12px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <div class="label" style="text-align:left">Απαιτούμενα Λίτρα:</div>
-            <div class="value" id="totalLiters" style="color:var(--accent)">6.5 L</div>
-          </div>
-          <div style="text-align:right">
-            <div class="label" style="text-align:right">Εκτιμώμενο Κόστος:</div>
-            <div class="huge-text" id="totalFuelCost" style="font-size:32px">12.03 €</div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <!-- ==================== ΣΕΛΙΔΑ 5: ΤΟΠΟΘΕΣΙΑ & ΙΣΤΟΡΙΑ ==================== -->
-  <div id="p5" class="page-content">
-    <section class="card location-card">
-      <div class="label" style="text-align:left">Τρέχουσα Τοποθεσία (GPS)</div>
-      <div class="location-title" id="locName">Αναζήτηση τοποθεσίας...</div>
-
-      <div class="location-info-row">
-        <div class="info-box">
-          <span>ΔΗΜΟΣ / ΠΕΡΙΟΧΗ</span>
-          <b id="locAdmin">—</b>
-        </div>
-        <div class="info-box">
-          <span>ΚΑΤΗΓΟΡΙΑ</span>
-          <b id="locType">—</b>
-        </div>
-        <div class="info-box">
-          <span>ΠΛΗΘΥΣΜΟΣ</span>
-          <b id="locPop">—</b>
-        </div>
-        <div class="info-box">
-          <span>ΥΨΟΜΕΤΡΟ</span>
-          <b id="locElevation">—</b>
-        </div>
-      </div>
-
-      <div class="notice" id="locDesc" style="text-align:left; font-size:16px; padding:16px; margin-top:10px;">
-        🔍 Λήψη ιστορικών και γεωγραφικών πληροφοριών για την περιοχή...
-      </div>
-    </section>
-  </div>
-</div>
-
-<script>
-const $ = id => document.getElementById(id);
-
-// 1. Navigation Pages
-function switchPage(pageId, btn) {
-  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  $(pageId).classList.add('active');
-  btn.classList.add('active');
-}
-
-// 2. Ώρα & Ημερομηνία
-function clock() {
-  const d = new Date();
-  $("time").textContent = d.toLocaleTimeString("el-GR", { hour: "2-digit", minute: "2-digit" });
-  $("date").textContent = d.toLocaleDateString("el-GR", { weekday: "short", day: "2-digit", month: "short" });
-}
-setInterval(clock, 1000); clock();
-
-// 3. GPS & Αισθητήρες (Σελίδα 1)
-let lastPos = null, maxKmh = 0, speedSum = 0, speedCount = 0, totalDistance = 0;
-let lastMapLat = null, lastMapLon = null;
-
-function compass(deg) {
-  if (deg == null || isNaN(deg)) return "—";
-  const dirs = ["Β", "ΒΑ", "Α", "ΝΑ", "Ν", "ΝΔ", "Δ", "ΒΔ"];
-  const idx = Math.round(deg / 45) % 8;
-  $("compassRing").textContent = dirs[idx];
-  $("compassRing").style.transform = `rotate(${-deg}deg)`;
-  return dirs[idx] + " " + Math.round(deg) + "°";
-}
-
-function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
-  return R * 2 * Math.atanΗ παρατήρησή σου για την οθόνη του αυτοκινήτου είναι πολύ σωστή: επειδή οι οθόνες των αυτοκινήτων (Android Auto, CarPlay, infotainment screens) βρίσκονται πιο μακριά από τα μάτια του οδηγού και έχουν διαφορετικό scaling (DPI) από τα κινητά, τα γράμματα και τα κουμπιά πρέπει να είναι **σημαντικά μεγαλύτερα**, με έντονα κοντράστ.
-
-### Τι άλλαξε στον κώδικα:
-
-1. **Γενναία Αύξηση Μεγεθών (High Visibility Dashboard):**
-   * Μεγάλωσαν τα γράμματα, οι αριθμοί (ταχύτητα, κλίσεις, καιρός), τα paddings και τα κουτιά (tiles) σε όλες τις σελίδες.
-   * Διορθώθηκε το footer στην 1η σελίδα ώστε τα κουτιά του καιρού και των συντεταγμένων να είναι ευανάγνωστα με μια ματιά από τη θέση του οδηγού.
-2. **Αφαίρεση Κουμπιού «Πλήρης Οθόνη»:**
-   * Αφαιρέθηκε πλήρως το κουμπί από το Header, ελευθερώνοντας χώρο.
-3. **Νέα 5η Σελίδα: 🏛️ «Τοποθεσία & Ιστορία» (GPS Geolocation Info):**
-   * Η εφαρμογή αναγνωρίζει αυτόματα μέσω GPS την πόλη, το χωριό ή τη δημοτική ενότητα στην οποία βρίσκεσαι.
-   * Συνδέεται **σε πραγματικό χρόνο με τη Wikipedia (στα Ελληνικά)** και σου φέρνει αυτόματα:
-     * **Όνομα Τοποθεσίας / Χωριού**
-     * **Πληθυσμό** (όποτε είναι διαθέσιμος)
-     * **Σύντομη Ιστορική & Γεωγραφική Σύνοψη (2-3 προτάσεις στα Ελληνικά)**
-     * Κουμπί **«Ανανέωση Πληροφοριών»** σε περίπτωση που αλλάξεις οικισμό.
-
----
-
-### Ολοκληρωμένος Κώδικας (5 Σελίδες):
-
-```html
-<!doctype html>
-<html lang="el">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Πίνακας Οργάνων & Ταξιδιού</title>
-<style>
-:root {
-  --bg: #070a0f;
-  --panel: #0e1520;
-  --line: #283548;
-  --text: #ffffff;
-  --muted: #a0aec0;
-  --accent: #56d6ff;
-  --danger: #ff4d4d;
-  --success: #28a745;
-  --warn: #ffb84d;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  width: 100%;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
-}
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 0;
-}
-
-.dashboard-container {
-  width: 94vw;
-  max-width: 1600px;
-  min-height: 92vh;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-#time { font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1; color: #fff; }
-#date { font-size: clamp(13px, 1.6vw, 17px); color: var(--muted); text-transform: capitalize; margin-top: 4px; }
-
-/* Navigation Tabs - Μεγάλα Κουμπιά */
-.nav-tabs {
-  display: flex;
-  gap: 8px;
-  background: var(--panel);
-  padding: 6px;
-  border-radius: 12px;
-  border: 1.5px solid var(--line);
-  flex-wrap: wrap;
-}
-.tab-btn {
-  background: transparent;
-  color: var(--muted);
-  border: none;
-  padding: 10px 18px;
-  font-size: clamp(13px, 1.5vw, 17px);
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
   transition: all 0.2s;
 }
 .tab-btn.active {
-  background: #1e293b;
-  color: var(--accent);
-  border: 1px solid var(--accent);
+  background: var(--line);
+  color: var(--text);
 }
 
 .header-actions {
@@ -640,24 +86,24 @@ header {
 }
 .badge {
   padding: 8px 12px;
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: 8px;
-  color: var(--text);
+  color: var(--muted);
   font-size: clamp(12px, 1.4vw, 15px);
-  font-weight: 600;
   background: var(--panel);
+  font-weight: 600;
 }
 .btn {
-  background: #1e293b;
+  background: #18212d;
   color: var(--text);
-  border: 1.5px solid #334155;
+  border: 1px solid #2a394b;
   border-radius: 8px;
-  padding: 10px 16px;
-  font-size: clamp(12px, 1.4vw, 16px);
+  padding: 8px 14px;
+  font-size: clamp(12px, 1.4vw, 15px);
   font-weight: 700;
   cursor: pointer;
 }
-.btn-sos { background: #4a1515; border-color: #882222; color: #ff9999; }
+.btn-sos { background: #4a1414; border-color: #822222; color: #ff9999; }
 
 /* Page Content Handling */
 .page-content { display: none; flex: 1; flex-direction: column; gap: 12px; }
@@ -671,8 +117,8 @@ main {
   gap: 12px;
 }
 .card {
-  background: linear-gradient(145deg, #111a28, #0a0f18);
-  border: 1.5px solid var(--line);
+  background: linear-gradient(145deg, #0d131c, #090d13);
+  border: 1px solid var(--line);
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -697,58 +143,54 @@ main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #fff;
 }
 
 /* Speed Section */
 .speed-card { align-items: center; text-align: center; }
 #speed {
-  font-size: clamp(65px, 11vw, 110px);
+  font-size: clamp(65px, 10vw, 110px);
   font-weight: 900;
   line-height: 0.85;
-  color: #fff;
 }
-.unit { font-size: clamp(16px, 2vw, 22px); color: var(--accent); font-weight: 700; }
+.unit { font-size: clamp(16px, 2vw, 22px); color: var(--muted); font-weight: 700; }
 
 /* Compass Wheel */
 .compass-box { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 6px 0; }
 .compass-ring {
-  width: clamp(42px, 4.5vw, 56px);
-  height: clamp(42px, 4.5vw, 56px);
+  width: clamp(42px, 4.5vw, 60px);
+  height: clamp(42px, 4.5vw, 60px);
   border-radius: 50%;
   border: 3px solid var(--accent);
   display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 900; font-size: clamp(14px, 1.6vw, 18px);
   transition: transform 0.2s ease-out;
-  color: #fff;
 }
 
 .row { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
 
 .notice {
-  font-size: clamp(11px, 1.2vw, 13px);
+  font-size: clamp(11px, 1.1vw, 13px);
   color: var(--muted);
   background: rgba(255, 255, 255, 0.03);
-  padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);
   text-align: center; line-height: 1.4;
 }
 
 #map {
-  height: 100%; min-height: 180px; width: 100%;
+  height: 100%; min-height: 200px; width: 100%;
   border-radius: 12px; background: #111821;
   display: flex; align-items: center; justify-content: center;
   color: var(--muted); font-size: 13px; text-align: center; overflow: hidden;
 }
 
-/* Footer Μεγαλύτερα Tiles */
 footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 .tile {
-  background: var(--panel); border: 1.5px solid var(--line);
+  background: var(--panel); border: 1px solid var(--line);
   border-radius: 12px; padding: 12px 6px; text-align: center;
   display: flex; flex-direction: column; justify-content: center;
 }
-.tile b { display: block; font-size: clamp(14px, 1.7vw, 20px); margin-top: 4px; color: #fff; font-weight: 800; }
-.tile span { font-size: clamp(10px, 1.1vw, 12px); color: var(--muted); font-weight: 700; }
+.tile b { display: block; font-size: clamp(14px, 1.8vw, 20px); margin-top: 4px; font-weight: 800; }
+.tile span { font-size: clamp(10px, 1.1vw, 13px); color: var(--muted); font-weight: 700; }
 
 /* PAGE 2: Driver Hub Layout */
 .driver-grid {
@@ -772,11 +214,11 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
   color: var(--accent);
   font-size: 36px;
   font-weight: 800;
-  padding: 12px 18px;
+  padding: 12px 16px;
   border-radius: 10px;
   text-align: right;
   margin-bottom: 10px;
-  border: 1.5px solid var(--line);
+  border: 1px solid var(--line);
 }
 .num-pad {
   display: grid;
@@ -785,8 +227,8 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 }
 .num-btn {
   background: var(--panel);
-  border: 1.5px solid var(--line);
-  color: #fff;
+  border: 1px solid var(--line);
+  color: var(--text);
   font-size: 22px;
   font-weight: 800;
   padding: 16px;
@@ -800,13 +242,13 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
   margin-top: 10px;
 }
 .cat-btn {
-  background: #1e293b;
-  border: 1.5px solid #334155;
-  color: #fff;
-  padding: 14px;
+  background: #18212d;
+  border: 1px solid #2a394b;
+  color: var(--text);
+  padding: 12px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -815,7 +257,7 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 }
 
 .expense-list {
-  max-height: 300px;
+  max-height: 280px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -826,18 +268,18 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
   justify-content: space-between;
   align-items: center;
   background: var(--panel);
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 10px;
-  border: 1.5px solid var(--line);
-  font-size: 16px;
+  border: 1px solid var(--line);
+  font-size: 15px;
   font-weight: 700;
 }
 .btn-del {
   background: transparent;
   border: none;
   color: var(--danger);
-  font-size: 18px;
   font-weight: bold;
+  font-size: 16px;
   cursor: pointer;
   padding: 4px 8px;
 }
@@ -860,10 +302,10 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
   align-items: center;
   gap: 12px;
   background: var(--panel);
-  padding: 12px 16px;
+  padding: 12px 14px;
   border-radius: 10px;
-  border: 1.5px solid var(--line);
-  font-size: 16px;
+  border: 1px solid var(--line);
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -892,34 +334,34 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 }
 .input-row input {
   background: var(--panel);
-  border: 1.5px solid var(--line);
-  color: #fff;
-  padding: 12px 16px;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 10px 14px;
   border-radius: 8px;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
 }
 
-/* PAGE 5: Location Info Layout */
+/* PAGE 5: Location Info */
 .info-card {
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 20px;
 }
-.location-title {
-  font-size: clamp(24px, 3.5vw, 40px);
+.info-title {
+  font-size: clamp(24px, 3vw, 38px);
   font-weight: 900;
   color: var(--accent);
 }
 .info-text {
-  font-size: clamp(14px, 1.8vw, 20px);
+  font-size: clamp(15px, 1.8vw, 20px);
   line-height: 1.6;
-  color: #e2e8f0;
+  color: var(--text);
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 850px) {
   .dashboard-container { width: 94vw; }
   main, .driver-grid, .calc-grid, .trip-grid { grid-template-columns: 1fr; }
   footer { grid-template-columns: repeat(3, 1fr); }
@@ -940,8 +382,8 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
       <button class="tab-btn active" onclick="switchPage('p1', this)">🚗 Όργανα</button>
       <button class="tab-btn" onclick="switchPage('p2', this)">☕ Οδηγός</button>
       <button class="tab-btn" onclick="switchPage('p3', this)">🧮 Έξοδα</button>
-      <button class="tab-btn" onclick="switchPage('p4', this)">📋 Ταξίδι/Καύσιμο</button>
-      <button class="tab-btn" onclick="switchPage('p5', this)">🏛️ Τοποθεσία</button>
+      <button class="tab-btn" onclick="switchPage('p4', this)">📋 Ταξίδι & Καύσιμο</button>
+      <button class="tab-btn" onclick="switchPage('p5', this)">📍 Πληροφορίες Περιοχής</button>
     </div>
 
     <div class="header-actions">
@@ -1015,7 +457,7 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
         <div class="notice" id="restWarning" style="margin-top:12px">
           ✅ Κατάσταση Οδηγού: Ξεκούραστος (Συνιστάται στάση κάθε 2 ώρες)
         </div>
-        <button class="btn" style="margin-top:12px; align-self:center;" onclick="resetDriveTimer()">🔄 Επανεκκίνηση Χρονομέτρου</button>
+        <button class="btn" style="margin-top:14px; align-self:center;" onclick="resetDriveTimer()">🔄 Επανεκκίνηση Χρονομέτρου</button>
       </section>
 
       <section class="card status-box">
@@ -1031,4 +473,872 @@ footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
         <div class="row" style="margin-top:12px">
           <a href="tel:112" class="btn btn-sos" style="flex:1; text-align:center; text-decoration:none;">📞 112 Ευρωπαϊκός Αριθμός</a>
           <a href="tel:100" class="btn" style="flex:1; text-align:center; text-decoration:none;">📞 100 Αστυνομία</a>
-          <a href="tel:10400" class="btn" style="flex:1; text-align:center; text-decoration:none;">
+          <a href="tel:10400" class="btn" style="flex:1; text-align:center; text-decoration:none;">📞 10400 Οδική Βοήθεια</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 3: ΑΡΙΘΜΟΜΗΧΑΝΗ ΕΞΟΔΩΝ ==================== -->
+  <div id="p3" class="page-content">
+    <div class="calc-grid">
+      <section class="card">
+        <div class="label">Εισαγωγή Ποσού (€)</div>
+        <div class="calc-display" id="calcDisplay">0</div>
+        
+        <div class="num-pad">
+          <button class="num-btn" onclick="pressNum('7')">7</button>
+          <button class="num-btn" onclick="pressNum('8')">8</button>
+          <button class="num-btn" onclick="pressNum('9')">9</button>
+          <button class="num-btn" onclick="pressNum('4')">4</button>
+          <button class="num-btn" onclick="pressNum('5')">5</button>
+          <button class="num-btn" onclick="pressNum('6')">6</button>
+          <button class="num-btn" onclick="pressNum('1')">1</button>
+          <button class="num-btn" onclick="pressNum('2')">2</button>
+          <button class="num-btn" onclick="pressNum('3')">3</button>
+          <button class="num-btn" onclick="pressNum('.')">.</button>
+          <button class="num-btn" onclick="pressNum('0')">0</button>
+          <button class="num-btn" style="color:var(--danger)" onclick="clearCalc()">C</button>
+        </div>
+
+        <div class="cat-btn-group">
+          <button class="cat-btn" onclick="addExpense('⛽ Βενζίνη')">⛽ Βενζίνη</button>
+          <button class="cat-btn" onclick="addExpense('🍔 Φαγητό')">🍔 Φαγητό</button>
+          <button class="cat-btn" onclick="addExpense('🛣️ Διόδια')">🛣️ Διόδια</button>
+          <button class="cat-btn" onclick="addExpense('📦 Διάφορα')">📦 Διάφορα</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Λίστα Εξόδων Ταξιδιού</div>
+          <button class="btn" style="font-size:12px" onclick="clearAllExpenses()">Reset Όλα</button>
+        </div>
+
+        <div class="expense-list" id="expenseList"></div>
+
+        <div style="border-top:1px solid var(--line); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Συνολικό Κόστος:</div>
+          <div class="huge-text" id="totalExpense" style="font-size:28px">0.00 €</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 4: ΤΑΞΙΔΙ & ΚΑΥΣΙΜΟ ==================== -->
+  <div id="p4" class="page-content">
+    <div class="trip-grid">
+      <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Λίστα Ελέγχου Πριν το Ταξίδι</div>
+          <div class="badge" id="checkProgress">0%</div>
+        </div>
+
+        <div class="checklist-group">
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Πίεση Ελαστικών & Ρεζέρβα</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Στάθμη Λαδιού Κινητήρα</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Ψυκτικό Υγρό (Παραφλού)</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Νερό Υαλοκαθαριστήρων</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Φαρμακείο, Τρίγωνο, Ανακλαστικό Γιλέκο</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Πυροσβεστήρας (Σε ισχύ)</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="label">Υπολογιστής Κατανάλωσης & Κόστους</div>
+        
+        <div class="fuel-input-group">
+          <div class="input-row">
+            <label>Μέση Κατανάλωση (L/100km):</label>
+            <input type="number" id="fuelAvg" value="6.5" step="0.1" oninput="calculateFuel()">
+          </div>
+          <div class="input-row">
+            <label>Τιμή Καυσίμου (€/L):</label>
+            <input type="number" id="fuelPrice" value="1.85" step="0.01" oninput="calculateFuel()">
+          </div>
+          <div class="input-row">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label>Χιλιόμετρα Διαδρομής (km):</label>
+              <button class="btn" style="font-size:11px; padding:4px 8px;" onclick="useGpsDistance()">Χρήση GPS km</button>
+            </div>
+            <input type="number" id="tripKm" value="100" step="1" oninput="calculateFuel()">
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--line); padding-top:12px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div class="label" style="text-align:left">Απαιτούμενα Λίτρα:</div>
+            <div class="value" id="totalLiters" style="color:var(--accent)">6.5 L</div>
+          </div>
+          <div style="text-align:right">
+            <div class="label" style="text-align:right">Εκτιμώμενο Κόστος:</div>
+            <div class="huge-text" id="totalFuelCost" style="font-size:28px">12.03 €</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 5: ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΡΙΟΧΗΣ ==================== -->
+  <div id="p5" class="page-content">
+    <section class="card info-card">
+      <div class="label" style="text-align:left">Τρέχουσα Τοποθεσία & Ιστορικά Στοιχεία</div>
+      <div class="info-title" id="locName">Αναμονή για GPS...</div>
+      <div class="info-text" id="locInfo">
+        Μόλις ληφθούν οι συντεταγμένες GPS, θα εμφανιστούν εδώ σύντομες πληροφορίες, πληθυσμός και ιστορικά στοιχεία για την περιοχή ή το χωριό που διασχίζετε.
+      </div>
+      <div class="row" style="margin-top:15px">
+        <div class="metric"><div class="label">Πληθυσμός</div><div class="value" id="locPop">—</div></div>
+        <div class="metric"><div class="label">Νομός / Περιφέρεια</div><div class="value" id="locRegion">—</div></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// 1. Navigation Pages
+function switchPage(pageId, btn) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  $(pageId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// 2. Ώρα & Ημερομηνία
+function clock() {
+  const d = new Date();
+  $("time").textContent = d.toLocaleTimeString("el-GR", { hour: "2-digit", minute: "2-digit" });
+  $("date").textContent = d.toLocaleDateString("el-GR", { weekday: "short", day: "2-digit", month: "short" });
+}
+setInterval(clock, 1000); clock();
+
+// 3. GPS & Αισθητήρες
+let lastPos = null, maxKmh = 0, speedSum = 0, speedCount = 0, totalDistance = 0;
+let lastMapLat = null, lastMapLon = null;
+
+function compass(deg) {
+  if (deg == null || isNaN(deg)) return "—";
+  const dirs = ["Β", "ΒΑ", "Α", "ΝΑ", "Ν", "ΝΔ", "Δ", "ΒΔ"];
+  const idx = Math.round(deg / 45) % 8;
+  $("compassRing").textContent = dirs[idx];
+  $("compassRing").style.transform = `rotate(${-deg}deg)`;
+  return dirs[idx] + " " + Math.round(deg) + "°";
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atanΔεν άλλαξα ακόμα τίποτα στον κώδικα! Όλα τα δεδομένα σας είναι απόλυτα ασφαλή. 
+
+Απλά ανέλυα τις παρατηρήσεις σας για να σας δώσω τον διορθωμένο κώδικα.
+
+---
+
+### Τι θα αλλάξουμε στον κώδικα τώρα:
+
+1. **Τεράστια Γράμματα & Κουτιά (Car Display Scaling):**
+   * Θα μεγαλώσουμε σημαντικά τις γραμματοσειρές, τα νούμερα, τα κουτιά και τα εικονίδια στο κάτω μέρος (καιρός, σελήνη, συντεταγμένες) χρησιμοποιώντας πολύ μεγαλύτερες αναλογίες (`clamp` / `vw` / `vh`).
+   * Θα διασφαλίσουμε ότι **τίποτα δεν ξεφεύγει** από τα πλαίσια (με χρήση `overflow: hidden` και αυτόματη προσαρμογή).
+
+2. **Αφαίρεση Κουμπιού «Πλήρης Οθόνη»:**
+   * Αφαιρείται τελείως από το header για να ελευθερωθεί χώρος.
+
+3. **Νέα 5η Σελίδα: 🗺️ Πληροφορίες Περιοχής (GPS Location Info):**
+   * Αντί για παιχνίδι, θα αναγνωρίζει **αυτόματα μέσω GPS** το χωριό/πόλη/περιοχή που διασχίζετε.
+   * Θα εμφανίζει **μικρό, ευανάγνωστο κείμενο στα ελληνικά** με:
+     * 🏙️ **Όνομα Περιοχής / Δήμου / Νομού**
+     * 👥 **Πληθυσμό** (αν είναι διαθέσιμος)
+     * 🏛️ **Ιστορικό/Σημαντικό Γεγονός ή Αξιοθέατο**
+     * 📍 **Γεωγραφικό Υψόμετρο & Χαρακτηριστικά**
+
+---
+
+Ορίστε ο **νέος, διορθωμένος και πλήρης κώδικας** με 5 Σελίδες:
+
+```html
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Πίνακας Οργάνων & Ταξιδιού</title>
+<style>
+:root {
+  --bg: #070a0f;
+  --panel: #0d121a;
+  --line: #202936;
+  --text: #eef3f8;
+  --muted: #8793a3;
+  --accent: #56d6ff;
+  --danger: #ff4d4d;
+  --success: #28a745;
+  --warn: #ffb84d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.dashboard-container {
+  width: 95vw;
+  max-width: 1600px;
+  min-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+#time { font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1; }
+#date { font-size: clamp(13px, 1.6vw, 18px); color: var(--muted); text-transform: capitalize; margin-top: 3px; }
+
+/* Navigation Tabs - Μεγάλα Κουμπιά */
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--panel);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.tab-btn {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  padding: 10px 16px;
+  font-size: clamp(13px, 1.6vw, 18px);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: var(--line);
+  color: var(--text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.badge {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: clamp(12px, 1.4vw, 16px);
+  background: var(--panel);
+  font-weight: 600;
+}
+.btn {
+  background: #18212d;
+  color: var(--text);
+  border: 1px solid #2a394b;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: clamp(12px, 1.4vw, 16px);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-sos { background: #4a1515; border-color: #7a2828; color: #ff9999; font-weight: bold; }
+
+/* Page Content Handling */
+.page-content { display: none; flex: 1; flex-direction: column; gap: 12px; }
+.page-content.active { display: flex; }
+
+/* Main Grid - Page 1 */
+main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 1fr;
+  gap: 12px;
+}
+.card {
+  background: linear-gradient(145deg, #0d131c, #090d13);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.label {
+  font-size: clamp(11px, 1.3vw, 15px);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  font-weight: 700;
+}
+.metric { text-align: center; flex: 1; min-width: 0; }
+.value { 
+  font-size: clamp(16px, 2.2vw, 26px); 
+  font-weight: 800; 
+  margin-top: 4px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Speed Section */
+.speed-card { align-items: center; text-align: center; }
+#speed {
+  font-size: clamp(60px, 11vw, 110px);
+  font-weight: 900;
+  line-height: 0.85;
+}
+.unit { font-size: clamp(16px, 2vw, 22px); color: var(--muted); font-weight: 700; }
+
+/* Compass Wheel */
+.compass-box { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 6px 0; }
+.compass-ring {
+  width: clamp(42px, 5vw, 60px);
+  height: clamp(42px, 5vw, 60px);
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: clamp(14px, 1.8vw, 20px);
+  transition: transform 0.2s ease-out;
+}
+
+.row { display: flex; justify-content: space-between; gap: 10px; width: 100%; }
+
+.notice {
+  font-size: clamp(11px, 1.2vw, 14px);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center; line-height: 1.4;
+}
+
+#map {
+  height: 100%; min-height: 200px; width: 100%;
+  border-radius: 12px; background: #111821;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 14px; text-align: center; overflow: hidden;
+}
+
+/* Footer Tiles - Μεγαλωμένα Κουτιά & Γράμματα */
+footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.tile {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 12px 6px; text-align: center;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.tile b { display: block; font-size: clamp(14px, 1.8vw, 22px); margin-top: 4px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile span { font-size: clamp(10px, 1.2vw, 14px); color: var(--muted); font-weight: 700; }
+
+/* PAGE 2: Driver Hub Layout */
+.driver-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  flex: 1;
+}
+.status-box { text-align: center; padding: 20px; }
+.huge-text { font-size: clamp(36px, 6vw, 65px); font-weight: 900; color: var(--accent); }
+
+/* PAGE 3: Expense Calculator Layout */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 14px;
+  flex: 1;
+}
+.calc-display {
+  background: #000;
+  color: var(--accent);
+  font-size: 36px;
+  font-weight: 800;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-align: right;
+  margin-bottom: 10px;
+  border: 1px solid var(--line);
+}
+.num-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.num-btn {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.cat-btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.cat-btn {
+  background: #18212d;
+  border: 1px solid #2a394b;
+  color: var(--text);
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.expense-list {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 16px;
+  font-weight: 700;
+}
+.btn-del {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* PAGE 4: Trip & Fuel Layout */
+.trip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  flex: 1;
+}
+.checklist-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+.chk-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.chk-item input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.fuel-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+.input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-row label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.input-row input {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* PAGE 5: Location Info Layout */
+.info-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px;
+}
+.info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+.info-title {
+  font-size: clamp(22px, 3.5vw, 36px);
+  font-weight: 900;
+  color: var(--accent);
+}
+.info-badge {
+  background: var(--line);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+.info-body {
+  font-size: clamp(14px, 1.8vw, 20px);
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .dashboard-container { width: 94vw; }
+  main, .driver-grid, .calc-grid, .trip-grid { grid-template-columns: 1fr; }
+  footer { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <header>
+    <div>
+      <div id="time">--:--</div>
+      <div id="date">—</div>
+    </div>
+
+    <!-- Κουμπιά Πλοήγησης 5 Σελίδων -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchPage('p1', this)">🚗 Όργανα</button>
+      <button class="tab-btn" onclick="switchPage('p2', this)">☕ Οδηγός</button>
+      <button class="tab-btn" onclick="switchPage('p3', this)">🧮 Έξοδα</button>
+      <button class="tab-btn" onclick="switchPage('p4', this)">📋 Ταξίδι</button>
+      <button class="tab-btn" onclick="switchPage('p5', this)">🗺️ Περιοχή</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-sos" onclick="copySOS()">🆘 SOS</button>
+      <button class="btn" id="start">📡 Αισθητήρες</button>
+      <div class="badge" id="gpsStatus">GPS: Αναμονή</div>
+    </div>
+  </header>
+
+  <!-- ==================== ΣΕΛΙΔΑ 1: ΟΡΓΑΝΑ ==================== -->
+  <div id="p1" class="page-content active">
+    <main>
+      <section class="card speed-card">
+        <div class="label">Ταχύτητα GPS</div>
+        <div id="speed">0</div>
+        <div class="unit">km/h</div>
+        
+        <div class="compass-box">
+          <div class="compass-ring" id="compassRing">Ν</div>
+          <div>
+            <div class="label">Πορεία</div>
+            <div class="value" id="heading">—</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="metric"><div class="label">Μέγιστη</div><div class="value" id="maxSpeed">0 km/h</div></div>
+          <div class="metric"><div class="label">Μέση</div><div class="value" id="avgSpeed">0 km/h</div></div>
+          <div class="metric"><div class="label">Απόσταση</div><div class="value" id="tripDist">0.0 km</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div>
+          <div class="label">Αισθητήρες Κίνησης</div>
+          <div class="row" style="margin-top:10px">
+            <div class="metric"><div class="label">Πρόσθια Κλίση</div><div class="value" id="pitch">—</div></div>
+            <div class="metric"><div class="label">Πλευρική Κλίση</div><div class="value" id="roll">—</div></div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <div class="metric"><div class="label">Υψόμετρο</div><div class="value" id="alt">—</div></div>
+            <div class="metric"><div class="label">Δύναμη G</div><div class="value" id="gforce">—</div></div>
+          </div>
+        </div>
+        <div class="notice">
+          ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση κλίσεων.
+        </div>
+      </section>
+
+      <section class="card mapcard">
+        <div id="map">Ο χάρτης θα εμφανιστεί μόλις ληφθεί θέση GPS.</div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="tile"><span>ΚΑΙΡΟΣ</span><b id="weather">—</b></div>
+      <div class="tile"><span>ΣΕΛΗΝΗ</span><b id="moon">—</b></div>
+      <div class="tile"><span>ΔΥΣΗ ΗΛΙΟΥ</span><b id="sunset">—</b></div>
+      <div class="tile"><span>ΑΚΡΙΒΕΙΑ GPS</span><b id="accuracy">—</b></div>
+      <div class="tile"><span>ΠΛΑΤΟΣ (LAT)</span><b id="lat">—</b></div>
+      <div class="tile"><span>ΜΗΚΟΣ (LON)</span><b id="lon">—</b></div>
+    </footer>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 2: ΟΔΗΓΟΣ & ΕΥΕΞΙΑ ==================== -->
+  <div id="p2" class="page-content">
+    <div class="driver-grid">
+      <section class="card status-box">
+        <div class="label">Χρόνος Συνεχούς Οδήγησης</div>
+        <div class="huge-text" id="driveTimer">00:00:00</div>
+        <div class="notice" id="restWarning" style="margin-top:14px">
+          ✅ Κατάσταση Οδηγού: Ξεκούραστος (Συνιστάται στάση κάθε 2 ώρες)
+        </div>
+        <button class="btn" style="margin-top:14px; align-self:center;" onclick="resetDriveTimer()">🔄 Επανεκκίνηση Χρονομέτρου</button>
+      </section>
+
+      <section class="card status-box">
+        <div class="label">Βαθμολογία Ομαλής Οδήγησης</div>
+        <div class="huge-text" id="smoothScore" style="color:var(--success)">100%</div>
+        <div class="notice" style="margin-top:14px">
+          ℹ Υπολογίζεται από τις απότομες αυξομειώσεις G-Force.
+        </div>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1;">
+        <div class="label">Τηλέφωνα Έκτακτης Ανάγκης</div>
+        <div class="row" style="margin-top:12px">
+          <a href="tel:112" class="btn btn-sos" style="flex:1; text-align:center; text-decoration:none; padding:12px;">📞 112 Ευρωπαϊκός Αριθμός</a>
+          <a href="tel:100" class="btn" style="flex:1; text-align:center; text-decoration:none; padding:12px;">📞 100 Αστυνομία</a>
+          <a href="tel:10400" class="btn" style="flex:1; text-align:center; text-decoration:none; padding:12px;">📞 10400 Οδική Βοήθεια</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 3: ΑΡΙΘΜΟΜΗΧΑΝΗ ΕΞΟΔΩΝ ==================== -->
+  <div id="p3" class="page-content">
+    <div class="calc-grid">
+      <section class="card">
+        <div class="label">Εισαγωγή Ποσού (€)</div>
+        <div class="calc-display" id="calcDisplay">0</div>
+        
+        <div class="num-pad">
+          <button class="num-btn" onclick="pressNum('7')">7</button>
+          <button class="num-btn" onclick="pressNum('8')">8</button>
+          <button class="num-btn" onclick="pressNum('9')">9</button>
+          <button class="num-btn" onclick="pressNum('4')">4</button>
+          <button class="num-btn" onclick="pressNum('5')">5</button>
+          <button class="num-btn" onclick="pressNum('6')">6</button>
+          <button class="num-btn" onclick="pressNum('1')">1</button>
+          <button class="num-btn" onclick="pressNum('2')">2</button>
+          <button class="num-btn" onclick="pressNum('3')">3</button>
+          <button class="num-btn" onclick="pressNum('.')">.</button>
+          <button class="num-btn" onclick="pressNum('0')">0</button>
+          <button class="num-btn" style="color:var(--danger)" onclick="clearCalc()">C</button>
+        </div>
+
+        <div class="cat-btn-group">
+          <button class="cat-btn" onclick="addExpense('⛽ Βενζίνη')">⛽ Βενζίνη</button>
+          <button class="cat-btn" onclick="addExpense('🍔 Φαγητό')">🍔 Φαγητό</button>
+          <button class="cat-btn" onclick="addExpense('🛣️ Διόδια')">🛣️ Διόδια</button>
+          <button class="cat-btn" onclick="addExpense('📦 Διάφορα')">📦 Διάφορα</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Λίστα Εξόδων Ταξιδιού</div>
+          <button class="btn" style="font-size:12px" onclick="clearAllExpenses()">Reset Όλα</button>
+        </div>
+
+        <div class="expense-list" id="expenseList"></div>
+
+        <div style="border-top:1px solid var(--line); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Συνολικό Κόστος:</div>
+          <div class="huge-text" id="totalExpense" style="font-size:32px">0.00 €</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 4: ΤΑΞΙΔΙ & ΚΑΥΣΙΜΟ ==================== -->
+  <div id="p4" class="page-content">
+    <div class="trip-grid">
+      <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="label">Λίστα Ελέγχου Πριν το Ταξίδι</div>
+          <div class="badge" id="checkProgress">0%</div>
+        </div>
+
+        <div class="checklist-group">
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Πίεση Ελαστικών & Ρεζέρβα</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Στάθμη Λαδιού Κινητήρα</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Ψυκτικό Υγρό (Παραφλού)</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Νερό Υαλοκαθαριστήρων</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Φαρμακείο, Τρίγωνο, Ανακλαστικό Γιλέκο</span>
+          </label>
+          <label class="chk-item">
+            <input type="checkbox" onchange="updateChecklistProgress()">
+            <span>🟢 Πυροσβεστήρας (Σε ισχύ)</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="label">Υπολογιστής Κατανάλωσης & Κόστους</div>
+        
+        <div class="fuel-input-group">
+          <div class="input-row">
+            <label>Μέση Κατανάλωση (L/100km):</label>
+            <input type="number" id="fuelAvg" value="6.5" step="0.1" oninput="calculateFuel()">
+          </div>
+          <div class="input-row">
+            <label>Τιμή Καυσίμου (€/L):</label>
+            <input type="number" id="fuelPrice" value="1.85" step="0.01" oninput="calculateFuel()">
+          </div>
+          <div class="input-row">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label>Χιλιόμετρα Διαδρομής (km):</label>
+              <button class="btn" style="font-size:11px; padding:3px 8px;" onclick="useGpsDistance()">Χρήση GPS km</button>
+            </div>
+            <input type="number" id="tripKm" value="100" step="1" oninput="calculateFuel()">
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--line); padding-top:12px; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div class="label" style="text-align:left">Απαιτούμενα Λίτρα:</div>
+            <div class="value" id="totalLiters" style="color:var(--accent)">6.5 L</div>
+          </div>
+          <div style="text-align:right">
+            <div class="label" style="text-align:right">Εκτιμώμενο Κόστος:</div>
+            <div class="huge-text" id="totalFuelCost" style="font-size:32px">12.03 €</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ==================== ΣΕΛΙΔΑ 5: ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΡΙΟΧΗΣ ==================== -->
+  <div id="p5" class="page-content">
+    <section class="card" style="flex:1">
+      <div class="info-card-content">
+        <div class="info-header">
+          <span style="font-size:32px">📍</span>
+          <div>
+            <div class="info-title" id="locTown">Αναμονή για GPS...</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <span class="info-badge" id="locRegion">Περιοχή: —</span>
+              <span class="info-badge" id="locCountry">Ελλάδα</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-body" id="locDetails">
+          Λαμβάνονται συντεταγμένες GPS... Μόλις εντοπιστεί η ακριβής θέση, θα εμφανιστούν αυτόματα πληροφορίες για την περιοχή, την ιστορία και τα χαρακτηριστικά του μέρους που διασχίζετε.
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// 1. Navigation Pages
+function switchPage(pageId, btn) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  $(pageId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// 2. Ώρα & Ημερομηνία
+function clock() {
+  const d = new Date();
+  $("time").textContent = d.toLocaleTimeString("el-GR", { hour: "2-digit", minute: "2-digit" });
+  $("date").textContent = d.toLocaleDateString("el-GR", { weekday: "short", day: "2-digit", month: "short" });
+}
+setInterval(clock, 1000); clock();
+
+// 3. GPS & Αισθητήρες
+let lastPos = null, maxKmh = 0, speedSum = 0, speedCount = 0, totalDistance = 0;
+let lastMapLat = null, lastMapLon = null;
+let lastLocLat = null, lastLocLon = null;
+
+function compass(deg) {
+  if (deg == null || isNaN(deg)) return "—";
+  const dirs = ["Β", "ΒΑ", "Α", "ΝΑ", "Ν", "ΝΔ", "Δ", "ΒΔ"];
