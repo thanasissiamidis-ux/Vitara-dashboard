@@ -7,9 +7,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Πίνακας Οργάνων & Ταξιδιού</title>
 <style>
+/* ==================== ΘΕΜΑΤΑ ΕΜΦΑΝΙΣΗΣ (THEMES) ==================== */
 :root {
+  /* Προεπιλογή: NIGHT */
   --bg: #070a0f;
   --panel: #0d121a;
+  --card-bg: linear-gradient(145deg, #0d131c, #090d13);
   --line: #202936;
   --text: #eef3f8;
   --muted: #8793a3;
@@ -17,7 +20,54 @@
   --danger: #ff4d4d;
   --success: #28a745;
   --warn: #ffb84d;
+  --shadow: rgba(0,0,0,0.5);
 }
+
+/* DAY Theme */
+body.theme-day {
+  --bg: #f2f4f8;
+  --panel: #ffffff;
+  --card-bg: linear-gradient(145deg, #ffffff, #f7f9fc);
+  --line: #d1d9e6;
+  --text: #1a202c;
+  --muted: #64748b;
+  --accent: #0284c7;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --warn: #d97706;
+  --shadow: rgba(0,0,0,0.08);
+}
+
+/* DUSK Theme */
+body.theme-dusk {
+  --bg: #1c1a24;
+  --panel: #272333;
+  --card-bg: linear-gradient(145deg, #2b2638, #221e2d);
+  --line: #3d3750;
+  --text: #f3f0f8;
+  --muted: #a097b5;
+  --accent: #f59e0b;
+  --danger: #ef4444;
+  --success: #10b981;
+  --warn: #f59e0b;
+  --shadow: rgba(0,0,0,0.3);
+}
+
+/* NIGHT Theme */
+body.theme-night {
+  --bg: #05070a;
+  --panel: #0a0e14;
+  --card-bg: linear-gradient(145deg, #0b0f17, #06080d);
+  --line: #18202c;
+  --text: #dbe4ee;
+  --muted: #5a6678;
+  --accent: #38bdf8;
+  --danger: #f87171;
+  --success: #4ade80;
+  --warn: #fbbf24;
+  --shadow: rgba(0,0,0,0.6);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   width: 100%;
@@ -25,6 +75,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 body {
   display: flex;
@@ -49,15 +100,15 @@ header {
   flex-wrap: wrap;
   gap: 8px;
 }
-#time { font-size: clamp(20px, 3vw, 30px); font-weight: 700; line-height: 1; }
-#date { font-size: clamp(10px, 1.2vw, 12px); color: var(--muted); text-transform: capitalize; margin-top: 2px; }
+#time { font-size: clamp(28px, 3.8vw, 40px); font-weight: 700; line-height: 1; }
+#date { font-size: clamp(14px, 1.7vw, 18px); color: var(--muted); text-transform: capitalize; margin-top: 2px; }
 
 /* Navigation Tabs */
 .nav-tabs {
   display: flex;
   gap: 6px;
   background: var(--panel);
-  padding: 4px;
+  padding: 6px;
   border-radius: 10px;
   border: 1px solid var(--line);
   flex-wrap: wrap;
@@ -66,9 +117,9 @@ header {
   background: transparent;
   color: var(--muted);
   border: none;
-  padding: 6px 12px;
-  font-size: clamp(10px, 1.2vw, 13px);
-  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: clamp(14px, 1.55vw, 19px);
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s;
@@ -85,23 +136,37 @@ header {
   flex-wrap: wrap;
 }
 .badge {
-  padding: 5px 9px;
+  padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--muted);
-  font-size: clamp(10px, 1.2vw, 12px);
+  font-size: clamp(13px, 1.45vw, 17px);
   background: var(--panel);
 }
 .btn {
-  background: #18212d;
+  background: var(--panel);
   color: var(--text);
-  border: 1px solid #2a394b;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: clamp(10px, 1.2vw, 12px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-size: clamp(13px, 1.45vw, 17px);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn:hover { opacity: 0.9; }
+.btn-sos { background: rgba(255, 77, 77, 0.15); border-color: var(--danger); color: var(--danger); font-weight: bold; }
+
+/* Theme Selector Control */
+.theme-select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: clamp(12px, 1.3vw, 15px);
+  font-weight: 600;
   cursor: pointer;
 }
-.btn-sos { background: #3b1111; border-color: #611e1e; color: #ff8888; }
 
 /* Page Content Handling */
 .page-content { display: none; flex: 1; flex-direction: column; gap: 10px; }
@@ -115,26 +180,31 @@ main {
   gap: 10px;
 }
 .card {
-  background: linear-gradient(145deg, #0d131c, #090d13);
+  background: var(--card-bg);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 8px;
+  gap: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: all 0.3s ease;
+}
+.card.hidden-widget {
+  display: none !important;
 }
 
 .label {
-  font-size: clamp(9px, 1vw, 11px);
+  font-size: clamp(13px, 1.35vw, 17px);
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.7px;
   text-align: center;
 }
 .metric { text-align: center; flex: 1; min-width: 0; }
 .value { 
-  font-size: clamp(12px, 1.5vw, 18px); 
+  font-size: clamp(17px, 2vw, 25px); 
   font-weight: 700; 
   margin-top: 2px; 
   white-space: nowrap;
@@ -145,24 +215,25 @@ main {
 /* Speed Section */
 .speed-card { align-items: center; text-align: center; }
 #speed {
-  font-size: clamp(48px, 8vw, 85px);
+  font-size: clamp(68px, 10vw, 112px);
   font-weight: 800;
   line-height: 0.9;
+  color: var(--text);
 }
-.unit { font-size: clamp(12px, 1.5vw, 16px); color: var(--muted); }
+.unit { font-size: clamp(16px, 1.9vw, 22px); color: var(--muted); }
 
 /* Compass Wheel */
-.compass-box { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 4px 0; }
+.compass-box { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 8px 0; }
 .compass-ring {
-  width: clamp(32px, 3.5vw, 44px);
-  height: clamp(32px, 3.5vw, 44px);
+  width: clamp(48px, 5vw, 64px);
+  height: clamp(48px, 5vw, 64px);
   border-radius: 50%;
   border: 2px solid var(--accent);
   display: flex; align-items: center; justify-content: center;
-  font-weight: bold; font-size: clamp(10px, 1.2vw, 14px);
+  font-weight: bold; font-size: clamp(15px, 1.7vw, 21px);
   transition: transform 0.2s ease-out;
+  color: var(--accent);
 }
-
 
 /* Graphical tilt indicators */
 .tilt-grid {
@@ -170,429 +241,241 @@ main {
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
-.tilt-panel {
-  min-width: 0;
-  text-align: center;
-}
+.tilt-panel { min-width: 0; text-align: center; }
 .tilt-gauge {
   position: relative;
   height: 86px;
   margin-top: 5px;
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(255,255,255,.018);
+  background: rgba(0,0,0,0.05);
   overflow: hidden;
 }
 .tilt-track {
-  position: absolute;
-  left: 50%;
-  top: 9px;
-  bottom: 9px;
-  width: 2px;
+  position: absolute; left: 50%; top: 9px; bottom: 9px; width: 2px;
   background: linear-gradient(to bottom, transparent, var(--line) 15%, var(--line) 85%, transparent);
   transform: translateX(-50%);
 }
 .pitch-center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 34px;
-  height: 2px;
-  background: var(--muted);
-  opacity: .7;
-  transform: translate(-50%, -50%);
+  position: absolute; left: 50%; top: 50%; width: 34px; height: 2px;
+  background: var(--muted); opacity: .7; transform: translate(-50%, -50%);
 }
 .pitch-indicator {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 42px;
-  height: 5px;
-  border-radius: 5px;
-  background: var(--accent);
-  box-shadow: 0 0 8px rgba(86,214,255,.35);
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: center;
+  position: absolute; left: 50%; top: 50%; width: 42px; height: 5px;
+  border-radius: 5px; background: var(--accent);
+  transform: translate(-50%, -50%); transform-origin: center;
   transition: transform .12s linear;
 }
 .pitch-indicator span, .roll-indicator span {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--text);
-  border: 2px solid var(--accent);
+  position: absolute; left: 50%; top: 50%; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--text); border: 2px solid var(--accent);
   transform: translate(-50%, -50%);
 }
 .tilt-end {
-  position: absolute;
-  font-size: 8px;
-  color: var(--muted);
-  font-weight: 700;
-  letter-spacing: .4px;
+  position: absolute; font-size: 9px; color: var(--muted); font-weight: 700; letter-spacing: .4px;
 }
 .tilt-end.top { top: 3px; left: 50%; transform: translateX(-50%); }
 .tilt-end.bottom { bottom: 3px; left: 50%; transform: translateX(-50%); }
+.tilt-end.left { left: 4px; top: 50%; transform: translateY(-50%); }
+.tilt-end.right { right: 4px; top: 50%; transform: translateY(-50%); }
+
 .roll-track {
-  position: absolute;
-  left: 9px;
-  right: 9px;
-  top: 50%;
-  height: 2px;
+  position: absolute; left: 9px; right: 9px; top: 50%; height: 2px;
   background: linear-gradient(to right, transparent, var(--line) 15%, var(--line) 85%, transparent);
   transform: translateY(-50%);
 }
 .roll-center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 2px;
-  height: 34px;
-  background: var(--muted);
-  opacity: .7;
-  transform: translate(-50%, -50%);
+  position: absolute; left: 50%; top: 50%; width: 2px; height: 34px;
+  background: var(--muted); opacity: .7; transform: translate(-50%, -50%);
 }
 .roll-indicator {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 42px;
-  height: 5px;
-  border-radius: 5px;
-  background: var(--accent);
-  box-shadow: 0 0 8px rgba(86,214,255,.35);
-  transform: translate(-50%, -50%) rotate(0deg);
-  transform-origin: center;
+  position: absolute; left: 50%; top: 50%; width: 42px; height: 5px;
+  border-radius: 5px; background: var(--accent);
+  transform: translate(-50%, -50%); transform-origin: center;
   transition: transform .12s linear;
-}
-.roll-indicator span { width: 12px; height: 12px; }
-@media (max-width: 650px) {
-  .tilt-grid { gap: 7px; }
-  .tilt-gauge { height: 76px; }
 }
 
 .row { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
 
 .notice {
-  font-size: clamp(8.5px, 0.9vw, 10px);
+  font-size: clamp(12px, 1.25vw, 16px);
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 6px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(0,0,0,0.03);
+  padding: 9px; border-radius: 6px; border: 1px solid var(--line);
   text-align: center; line-height: 1.3;
 }
 
 #map {
-  height: 100%; min-height: 160px; width: 100%;
-  border-radius: 10px; background: #111821;
+  height: 100%; min-height: 190px; width: 100%;
+  border-radius: 10px; background: var(--panel);
   display: flex; align-items: center; justify-content: center;
-  color: var(--muted); font-size: 11px; text-align: center; overflow: hidden;
+  color: var(--muted); font-size: 14px; text-align: center; overflow: hidden;
 }
 
-footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+footer { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+footer.hidden-widget { display: none !important; }
+
 .tile {
   background: var(--panel); border: 1px solid var(--line);
-  border-radius: 10px; padding: 8px 4px; text-align: center;
+  border-radius: 12px; padding: 12px 7px; text-align: center;
   display: flex; flex-direction: column; justify-content: center;
 }
-.tile b { display: block; font-size: clamp(11px, 1.3vw, 15px); margin-top: 2px; }
-.tile span { font-size: clamp(8px, 0.9vw, 10px); color: var(--muted); }
+.tile b { display: block; font-size: clamp(15px, 1.8vw, 22px); margin-top: 2px; }
+.tile span { font-size: clamp(11px, 1.15vw, 15px); color: var(--muted); }
 
 /* PAGE 2: Driver Hub Layout */
-.driver-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  flex: 1;
-}
-.status-box { text-align: center; padding: 15px; }
-.huge-text { font-size: clamp(28px, 4vw, 48px); font-weight: 800; color: var(--accent); }
+.driver-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+.status-box { text-align: center; padding: 20px; }
+.huge-text { font-size: clamp(38px, 5vw, 62px); font-weight: 800; color: var(--accent); }
 
 /* PAGE 3: Expense Calculator Layout */
-.calc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 12px;
-  flex: 1;
-}
+.calc-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; flex: 1; }
 .calc-display {
-  background: #000;
+  background: var(--panel);
   color: var(--accent);
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
-  padding: 10px 14px;
+  padding: 14px 16px;
   border-radius: 8px;
   text-align: right;
   margin-bottom: 8px;
   border: 1px solid var(--line);
 }
-.num-pad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
+.num-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .num-btn {
   background: var(--panel);
   border: 1px solid var(--line);
   color: var(--text);
-  font-size: 18px;
-  padding: 12px;
+  font-size: 24px;
+  padding: 16px;
   border-radius: 8px;
   cursor: pointer;
 }
-.cat-btn-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-top: 8px;
-}
+.cat-btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
 .cat-btn {
-  background: #18212d;
-  border: 1px solid #2a394b;
+  background: var(--panel);
+  border: 1px solid var(--line);
   color: var(--text);
-  padding: 10px;
+  padding: 14px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
 }
 
-.expense-list {
-  max-height: 250px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.expense-list { max-height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
 .expense-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--panel);
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  font-size: 13px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--panel); padding: 12px 14px; border-radius: 8px;
+  border: 1px solid var(--line); font-size: 16px;
 }
-.btn-del {
-  background: transparent;
-  border: none;
-  color: var(--danger);
-  font-weight: bold;
-  cursor: pointer;
-  padding: 2px 6px;
-}
+.btn-del { background: transparent; border: none; color: var(--danger); font-weight: bold; cursor: pointer; padding: 2px 6px; font-size: 18px; }
 
 /* PAGE 4: Trip & Fuel Layout */
-.trip-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  flex: 1;
-}
-.checklist-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
-}
+.trip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+.checklist-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
 .chk-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--panel);
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  font-size: 13px;
-  cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--panel); padding: 13px 14px; border-radius: 8px;
+  border: 1px solid var(--line); font-size: 16px; cursor: pointer;
 }
-.chk-item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
+.chk-item input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--accent); cursor: pointer; }
 
-.fuel-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
-}
-.input-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.input-row label {
-  font-size: 11px;
-  color: var(--muted);
-}
+.fuel-input-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.input-row { display: flex; flex-direction: column; gap: 4px; }
+.input-row label { font-size: 14px; color: var(--muted); }
 .input-row input {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  color: var(--text);
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
+  background: var(--panel); border: 1px solid var(--line);
+  color: var(--text); padding: 11px 13px; border-radius: 6px; font-size: 17px;
 }
 
+/* PAGE 5: Location */
+.location-grid { display: grid; grid-template-columns: 1.05fr 1.95fr; gap: 12px; flex: 1; min-height: 0; }
+.location-main { justify-content: flex-start; text-align: left; }
+.location-name { font-size: clamp(30px, 4.4vw, 58px); font-weight: 800; line-height: 1.05; color: var(--accent); overflow-wrap: anywhere; }
+.location-sub { font-size: clamp(17px, 2vw, 25px); color: var(--muted); margin-top: 5px; }
 
-/* ==================== CAR DISPLAY SIZING ====================
-   The dashboard is designed for a distant in-car screen, not a phone.
-   Values are intentionally larger while keeping text inside its cards.
-*/
-#time { font-size: clamp(28px, 3.8vw, 40px); }
-#date { font-size: clamp(14px, 1.7vw, 18px); }
+.location-grid-info { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-top: 16px; }
+.location-stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 13px; min-width: 0; }
+.location-stat span { display:block; color:var(--muted); font-size:clamp(12px,1.2vw,16px); margin-bottom:4px; }
+.location-stat b { display:block; font-size:clamp(17px,1.9vw,25px); overflow-wrap:anywhere; }
 
-.nav-tabs { gap: 8px; padding: 6px; }
-.tab-btn {
-  padding: 10px 16px;
-  font-size: clamp(14px, 1.55vw, 19px);
-  border-radius: 8px;
-}
-.badge {
-  padding: 8px 12px;
-  font-size: clamp(13px, 1.45vw, 17px);
-}
-.btn {
-  padding: 9px 13px;
-  font-size: clamp(13px, 1.45vw, 17px);
-  border-radius: 8px;
-}
-.card { padding: 16px; gap: 12px; }
-.label { font-size: clamp(13px, 1.35vw, 17px); letter-spacing: .7px; }
-.value { font-size: clamp(17px, 2vw, 25px); }
-#speed { font-size: clamp(68px, 10vw, 112px); }
-.unit { font-size: clamp(16px, 1.9vw, 22px); }
-.compass-box { gap: 12px; margin: 8px 0; }
-.compass-ring {
-  width: clamp(48px, 5vw, 64px);
-  height: clamp(48px, 5vw, 64px);
-  font-size: clamp(15px, 1.7vw, 21px);
-}
-.notice { font-size: clamp(12px, 1.25vw, 16px); padding: 9px; }
-#map { min-height: 190px; font-size: 14px; }
-footer { gap: 10px; }
-.tile { padding: 12px 7px; border-radius: 12px; }
-.tile b { font-size: clamp(15px, 1.8vw, 22px); }
-.tile span { font-size: clamp(11px, 1.15vw, 15px); }
+.location-info { justify-content: flex-start; text-align: left; }
+.location-info h2 { font-size: clamp(21px, 2.4vw, 31px); margin-bottom: 8px; }
+.location-info p { font-size: clamp(15px, 1.65vw, 21px); line-height: 1.45; color: var(--text); }
+.location-updated { margin-top:auto; color:var(--muted); font-size:clamp(11px,1.15vw,15px); text-align:right; }
+.location-loading { text-align:center; color:var(--muted); font-size:clamp(16px,1.8vw,22px); padding:25px 10px; }
 
-.huge-text { font-size: clamp(38px, 5vw, 62px); }
-.status-box { padding: 20px; }
-.num-btn { font-size: 24px; padding: 16px; }
-.cat-btn { padding: 14px; font-size: 16px; }
-.calc-display { font-size: 36px; padding: 14px 16px; }
-.expense-item { padding: 12px 14px; font-size: 16px; }
-.input-row label { font-size: 14px; }
-.input-row input { padding: 11px 13px; font-size: 17px; }
-.chk-item { padding: 13px 14px; font-size: 16px; }
-.chk-item input[type="checkbox"] { width: 22px; height: 22px; }
+/* PAGE 6: Settings / Widget Management */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+.widget-toggle-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.widget-toggle-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--panel); border: 1px solid var(--line);
+  padding: 12px 16px; border-radius: 8px; font-size: 16px;
+}
+.switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--line); transition: .3s; border-radius: 24px;
+}
+.slider:before {
+  position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+  background-color: white; transition: .3s; border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(22px); }
 
-/* Location page */
-.location-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 1.95fr;
-  gap: 12px;
-  flex: 1;
-  min-height: 0;
+/* POPUP (DEPARTURE MODAL) */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center;
+  z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
 }
-.location-main {
-  justify-content: flex-start;
-  text-align: left;
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: var(--panel); border: 2px solid var(--accent); border-radius: 16px;
+  padding: 24px; width: 90%; max-width: 480px; text-align: center;
+  position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
-.location-name {
-  font-size: clamp(30px, 4.4vw, 58px);
-  font-weight: 800;
-  line-height: 1.05;
-  color: var(--accent);
-  overflow-wrap: anywhere;
+.modal-close-btn {
+  position: absolute; top: 12px; right: 14px; background: transparent;
+  border: none; color: var(--muted); font-size: 22px; cursor: pointer; font-weight: bold;
 }
-.location-sub {
-  font-size: clamp(17px, 2vw, 25px);
-  color: var(--muted);
-  margin-top: 5px;
-}
-
-.tilt-end.left { left: 4px; top: 50%; transform: translateY(-50%); }
-.tilt-end.right { right: 4px; top: 50%; transform: translateY(-50%); }
-
-.location-grid-info {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 10px;
-  margin-top: 16px;
-}
-.location-stat {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 13px;
-  min-width: 0;
-}
-.location-stat span {
-  display:block;
-  color:var(--muted);
-  font-size:clamp(12px,1.2vw,16px);
-  margin-bottom:4px;
-}
-.location-stat b {
-  display:block;
-  font-size:clamp(17px,1.9vw,25px);
-  overflow-wrap:anywhere;
-}
-.location-info {
-  justify-content: flex-start;
-  text-align: left;
-}
-.location-info h2 {
-  font-size: clamp(21px, 2.4vw, 31px);
-  margin-bottom: 8px;
-}
-.location-info p {
-  font-size: clamp(15px, 1.65vw, 21px);
-  line-height: 1.45;
-  color: var(--text);
-}
-.location-updated {
-  margin-top:auto;
-  color:var(--muted);
-  font-size:clamp(11px,1.15vw,15px);
-  text-align:right;
-}
-.location-loading {
-  text-align:center;
-  color:var(--muted);
-  font-size:clamp(16px,1.8vw,22px);
-  padding:25px 10px;
-}
+.modal-close-btn:hover { color: var(--danger); }
 
 /* Responsive */
 @media (max-width: 850px) {
   .dashboard-container { width: 92vw; }
-  main, .driver-grid, .calc-grid, .trip-grid, .location-grid { grid-template-columns: 1fr; }
+  main, .driver-grid, .calc-grid, .trip-grid, .location-grid, .settings-grid { grid-template-columns: 1fr; }
   footer { grid-template-columns: repeat(3, 1fr); }
-  .location-info { min-height: 260px; }
 }
 
 @media (max-width: 600px) {
   .dashboard-container { width: 96vw; }
   .nav-tabs { width: 100%; }
-  .tab-btn { flex: 1 1 auto; }
+  .tab-btn { flex: 1 1 auto; padding: 8px 10px; font-size: 13px; }
   footer { grid-template-columns: repeat(2, 1fr); }
-  .location-grid-info { grid-template-columns: 1fr 1fr; }
-}
-@media (min-width: 601px) and (max-width: 1000px) {
-  .dashboard-container { width: 96vw; }
 }
 </style>
 </head>
-<body>
+<body class="theme-night">
+
+<!-- POPUP ΠΡΩΤΗΣ ΕΚΚΙΝΗΣΗΣ ΗΜΕΡΑΣ -->
+<div class="modal-overlay" id="departureModal">
+  <div class="modal-card">
+    <button class="modal-close-btn" onclick="closeDeparturePopup()">✕</button>
+    <div style="font-size:40px; margin-bottom:8px;">🚗💨</div>
+    <h2 style="margin-bottom:8px; color:var(--accent);">Καλή Διαδρομή!</h2>
+    <p style="color:var(--muted); font-size:15px; margin-bottom:16px;">
+      Θυμηθείτε να φορέσετε ζώνη ασφαλείας και να τοποθετήσετε τη συσκευή στη βάση.
+    </p>
+    <div style="font-size:13px; color:var(--muted);">
+      Αυτόματο κλείσιμο σε <b id="popupTimer" style="color:var(--text);">10</b> δευτερόλεπτα
+    </div>
+  </div>
+</div>
 
 <div class="dashboard-container">
   <header>
@@ -608,9 +491,17 @@ footer { gap: 10px; }
       <button class="tab-btn" onclick="switchPage('p3', this)">🧮 Έξοδα</button>
       <button class="tab-btn" onclick="switchPage('p4', this)">📋 Ταξίδι & Καύσιμο</button>
       <button class="tab-btn" onclick="switchPage('p5', this)">📍 Τοποθεσία</button>
+      <button class="tab-btn" onclick="switchPage('p6', this)">⚙️ Ρυθμίσεις</button>
     </div>
 
     <div class="header-actions">
+      <!-- Επιλογέας Θέματος -->
+      <select id="themeSelect" class="theme-select" onchange="changeTheme(this.value)">
+        <option value="theme-day">☀️ DAY</option>
+        <option value="theme-dusk">🌆 DUSK</option>
+        <option value="theme-night" selected>🌙 NIGHT</option>
+      </select>
+
       <button class="btn btn-sos" onclick="copySOS()">🆘 SOS</button>
       <button class="btn" id="start">📡 Αισθητήρες</button>
       <div class="badge" id="gpsStatus">GPS: Αναμονή</div>
@@ -620,7 +511,7 @@ footer { gap: 10px; }
   <!-- ==================== ΣΕΛΙΔΑ 1: ΟΡΓΑΝΑ ==================== -->
   <div id="p1" class="page-content active">
     <main>
-      <section class="card speed-card">
+      <section class="card speed-card" id="widget-speed">
         <div class="label">Ταχύτητα GPS</div>
         <div id="speed">0</div>
         <div class="unit">km/h</div>
@@ -640,30 +531,26 @@ footer { gap: 10px; }
         </div>
       </section>
 
-      <section class="card">
+      <section class="card" id="widget-tilt">
         <div>
           <div class="label">Αισθητήρες Κίνησης</div>
           <div class="tilt-grid" style="margin-top:8px">
             <div class="tilt-panel">
               <div class="label">Πρόσθια / Πίσω</div>
-              <div class="tilt-gauge pitch-gauge" aria-label="Γραφικός δείκτης πρόσθιας κλίσης">
-                <div class="pitch-track"></div>
+              <div class="tilt-gauge">
+                <div class="tilt-track"></div>
                 <div class="pitch-center"></div>
-                <div class="pitch-indicator" id="pitchIndicator">
-                  <span></span>
-                </div>
+                <div class="pitch-indicator" id="pitchIndicator"><span></span></div>
                 <div class="tilt-end top">ΕΜΠΡΟΣ</div>
                 <div class="tilt-end bottom">ΠΙΣΩ</div>
               </div>
             </div>
             <div class="tilt-panel">
               <div class="label">Αριστερά / Δεξιά</div>
-              <div class="tilt-gauge roll-gauge" aria-label="Γραφικός δείκτης πλευρικής κλίσης">
+              <div class="tilt-gauge">
                 <div class="roll-track"></div>
                 <div class="roll-center"></div>
-                <div class="roll-indicator" id="rollIndicator">
-                  <span></span>
-                </div>
+                <div class="roll-indicator" id="rollIndicator"><span></span></div>
                 <div class="tilt-end left">ΑΡΙΣΤ.</div>
                 <div class="tilt-end right">ΔΕΞΙΑ</div>
               </div>
@@ -674,17 +561,15 @@ footer { gap: 10px; }
             <div class="metric"><div class="label">Δύναμη G</div><div class="value" id="gforce">—</div></div>
           </div>
         </div>
-        <div class="notice">
-          ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση κλίσεων.
-        </div>
+        <div class="notice">ℹ Τοποθετήστε τη συσκευή σε <b>όρθια βάση</b> για σωστή μέτρηση.</div>
       </section>
 
-      <section class="card mapcard">
+      <section class="card mapcard" id="widget-map">
         <div id="map">Ο χάρτης θα εμφανιστεί μόλις ληφθεί θέση GPS.</div>
       </section>
     </main>
 
-    <footer>
+    <footer id="widget-footer">
       <div class="tile"><span>ΚΑΙΡΟΣ</span><b id="weather">—</b></div>
       <div class="tile"><span>ΣΕΛΗΝΗ</span><b id="moon">—</b></div>
       <div class="tile"><span>ΔΥΣΗ ΗΛΙΟΥ</span><b id="sunset">—</b></div>
@@ -694,10 +579,10 @@ footer { gap: 10px; }
     </footer>
   </div>
 
-  <!-- ==================== ΣΕΛΙΔΑ 2: ΟΔΗΓΟΣ & ΕΥΕΞΙΑ ==================== -->
+  <!-- ==================== ΣΕΛΙΔΑ 2: ΟΔΗΓΟΣ ==================== -->
   <div id="p2" class="page-content">
     <div class="driver-grid">
-      <section class="card status-box">
+      <section class="card status-box" id="widget-driver-timer">
         <div class="label">Χρόνος Συνεχούς Οδήγησης</div>
         <div class="huge-text" id="driveTimer">00:00:00</div>
         <div class="notice" id="restWarning" style="margin-top:10px">
@@ -706,7 +591,7 @@ footer { gap: 10px; }
         <button class="btn" style="margin-top:10px; align-self:center;" onclick="resetDriveTimer()">🔄 Επανεκκίνηση Χρονομέτρου</button>
       </section>
 
-      <section class="card status-box">
+      <section class="card status-box" id="widget-driver-score">
         <div class="label">Βαθμολογία Ομαλής Οδήγησης</div>
         <div class="huge-text" id="smoothScore" style="color:var(--success)">100%</div>
         <div class="notice" style="margin-top:10px">
@@ -725,7 +610,7 @@ footer { gap: 10px; }
     </div>
   </div>
 
-  <!-- ==================== ΣΕΛΙΔΑ 3: ΑΡΙΘΜΟΜΗΧΑΝΗ ΕΞΟΔΩΝ ==================== -->
+  <!-- ==================== ΣΕΛΙΔΑ 3: ΕΞΟΔΑ ==================== -->
   <div id="p3" class="page-content">
     <div class="calc-grid">
       <section class="card">
@@ -758,7 +643,7 @@ footer { gap: 10px; }
       <section class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div class="label">Λίστα Εξόδων Ταξιδιού</div>
-          <button class="btn" style="font-size:10px" onclick="clearAllExpenses()">Reset Όλα</button>
+          <button class="btn" style="font-size:12px" onclick="clearAllExpenses()">Reset Όλα</button>
         </div>
 
         <div class="expense-list" id="expenseList"></div>
@@ -774,7 +659,6 @@ footer { gap: 10px; }
   <!-- ==================== ΣΕΛΙΔΑ 4: ΤΑΞΙΔΙ & ΚΑΥΣΙΜΟ ==================== -->
   <div id="p4" class="page-content">
     <div class="trip-grid">
-      <!-- Λίστα Ελέγχου (Pre-Trip Checklist) -->
       <section class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <div class="label">Λίστα Ελέγχου Πριν το Ταξίδι</div>
@@ -783,33 +667,32 @@ footer { gap: 10px; }
 
         <div class="checklist-group">
           <label class="chk-item">
-            <input type="checkbox" onchange="updateChecklistProgress()">
+            <input type="checkbox" id="chk0" onchange="updateChecklistProgress()">
             <span>🟢 Πίεση Ελαστικών & Ρεζέρβα</span>
           </label>
           <label class="chk-item">
-            <input type="checkbox" onchange="updateChecklistProgress()">
+            <input type="checkbox" id="chk1" onchange="updateChecklistProgress()">
             <span>🟢 Στάθμη Λαδιού Κινητήρα</span>
           </label>
           <label class="chk-item">
-            <input type="checkbox" onchange="updateChecklistProgress()">
+            <input type="checkbox" id="chk2" onchange="updateChecklistProgress()">
             <span>🟢 Ψυκτικό Υγρό (Παραφλού)</span>
           </label>
           <label class="chk-item">
-            <input type="checkbox" onchange="updateChecklistProgress()">
+            <input type="checkbox" id="chk3" onchange="updateChecklistProgress()">
             <span>🟢 Νερό Υαλοκαθαριστήρων</span>
           </label>
           <label class="chk-item">
-            <input type="checkbox" onchange="updateChecklistProgress()">
+            <input type="checkbox" id="chk4" onchange="updateChecklistProgress()">
             <span>🟢 Φαρμακείο, Τρίγωνο, Ανακλαστικό Γιλέκο</span>
           </label>
           <label class="chk-item">
-            <input type="checkbox" onchange="updateChecklistProgress()">
+            <input type="checkbox" id="chk5" onchange="updateChecklistProgress()">
             <span>🟢 Πυροσβεστήρας (Σε ισχύ)</span>
           </label>
         </div>
       </section>
 
-      <!-- Υπολογιστής Καυσίμου & Κόστους -->
       <section class="card">
         <div class="label">Υπολογιστής Κατανάλωσης & Κόστους</div>
         
@@ -844,7 +727,6 @@ footer { gap: 10px; }
       </section>
     </div>
   </div>
-</div>
 
   <!-- ==================== ΣΕΛΙΔΑ 5: ΤΟΠΟΘΕΣΙΑ ==================== -->
   <div id="p5" class="page-content">
@@ -862,9 +744,7 @@ footer { gap: 10px; }
             <div class="location-stat"><span>Συντεταγμένες</span><b id="placeCoords">—</b></div>
           </div>
         </div>
-        <div class="notice" style="margin-top:auto">
-          📍 Η τοποθεσία ενημερώνεται αυτόματα καθώς κινείστε.
-        </div>
+        <div class="notice" style="margin-top:auto">📍 Η τοποθεσία ενημερώνεται αυτόματα καθώς κινείστε.</div>
       </section>
 
       <section class="card location-info">
@@ -876,10 +756,115 @@ footer { gap: 10px; }
     </div>
   </div>
 
+  <!-- ==================== ΣΕΛΙΔΑ 6: ΡΥΘΜΙΣΕΙΣ & WIDGETS ==================== -->
+  <div id="p6" class="page-content">
+    <div class="settings-grid">
+      <section class="card">
+        <div class="label" style="text-align:left;">Διαχείριση Widgets (Εμφάνιση/Απόκρυψη)</div>
+        <div class="widget-toggle-list">
+          <div class="widget-toggle-item">
+            <span>🏎️ Ταχύτητα & Πορεία</span>
+            <label class="switch"><input type="checkbox" id="toggle-widget-speed" checked onchange="toggleWidget('widget-speed', this.checked)"><span class="slider"></span></label>
+          </div>
+          <div class="widget-toggle-item">
+            <span>📐 Αισθητήρες Κλίσης</span>
+            <label class="switch"><input type="checkbox" id="toggle-widget-tilt" checked onchange="toggleWidget('widget-tilt', this.checked)"><span class="slider"></span></label>
+          </div>
+          <div class="widget-toggle-item">
+            <span>🗺️ Χάρτης GPS</span>
+            <label class="switch"><input type="checkbox" id="toggle-widget-map" checked onchange="toggleWidget('widget-map', this.checked)"><span class="slider"></span></label>
+          </div>
+          <div class="widget-toggle-item">
+            <span>📊 Footer (Καιρός, Σελήνη, GPS)</span>
+            <label class="switch"><input type="checkbox" id="toggle-widget-footer" checked onchange="toggleWidget('widget-footer', this.checked)"><span class="slider"></span></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="label" style="text-align:left;">Πληροφορίες Dashboard</div>
+        <p style="font-size:14px; color:var(--muted); margin-top:10px; line-height:1.5;">
+          Όλες οι ρυθμίσεις, τα έξοδα, οι εκτιμήσεις καυσίμου και οι προτιμήσεις εμφάνισης αποθηκεύονται αυτόματα στο <b>localStorage</b> της συσκευής σας.
+        </p>
+      </section>
+    </div>
+  </div>
+
+</div>
+
 <script>
 const $ = id => document.getElementById(id);
 
-// 1. Navigation Pages
+// ==================== 1. LOCAL STORAGE & DEPARTURE POPUP ====================
+function checkDeparturePopup() {
+  const today = new Date().toDateString();
+  const lastLaunch = localStorage.getItem("last_launch_date");
+
+  // Εμφανίζεται μόνο την πρώτη φορά της ημέρας
+  if (lastLaunch !== today) {
+    localStorage.setItem("last_launch_date", today);
+    showDeparturePopup();
+  }
+}
+
+let popupInterval;
+function showDeparturePopup() {
+  const modal = $("departureModal");
+  modal.classList.add("active");
+  
+  let secondsLeft = 10;
+  $("popupTimer").textContent = secondsLeft;
+
+  popupInterval = setInterval(() => {
+    secondsLeft--;
+    $("popupTimer").textContent = secondsLeft;
+    if (secondsLeft <= 0) {
+      closeDeparturePopup();
+    }
+  }, 1000);
+}
+
+function closeDeparturePopup() {
+  clearInterval(popupInterval);
+  $("departureModal").classList.remove("active");
+}
+
+// ==================== 2. ΘΕΜΑΤΑ ΕΜΦΑΝΙΣΗΣ (THEMES) ====================
+function changeTheme(themeName) {
+  document.body.className = themeName;
+  $("themeSelect").value = themeName;
+  localStorage.setItem("dashboard_theme", themeName);
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem("dashboard_theme") || "theme-night";
+  changeTheme(savedTheme);
+}
+
+// ==================== 3. WIDGET TOGGLES ====================
+function toggleWidget(widgetId, isVisible) {
+  const el = $(widgetId);
+  if (!el) return;
+  if (isVisible) el.classList.remove("hidden-widget");
+  else el.classList.add("hidden-widget");
+
+  // Αποθήκευση στο localStorage
+  const widgetStates = JSON.parse(localStorage.getItem("widget_states") || "{}");
+  widgetStates[widgetId] = isVisible;
+  localStorage.setItem("widget_states", JSON.stringify(widgetStates));
+}
+
+function loadWidgetStates() {
+  const widgetStates = JSON.parse(localStorage.getItem("widget_states") || "{}");
+  Object.keys(widgetStates).forEach(id => {
+    const isVisible = widgetStates[id];
+    toggleWidget(id, isVisible);
+    const toggleEl = $("toggle-" + id);
+    if (toggleEl) toggleEl.checked = isVisible;
+  });
+}
+
+// ==================== 4. NAVIGATION ====================
 function switchPage(pageId, btn) {
   document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -887,7 +872,7 @@ function switchPage(pageId, btn) {
   btn.classList.add('active');
 }
 
-// 2. Ώρα & Ημερομηνία
+// ==================== 5. ΩΡΑ & ΗΜΕΡΟΜΗΝΙΑ ====================
 function clock() {
   const d = new Date();
   $("time").textContent = d.toLocaleTimeString("el-GR", { hour: "2-digit", minute: "2-digit" });
@@ -895,7 +880,7 @@ function clock() {
 }
 setInterval(clock, 1000); clock();
 
-// 3. GPS & Αισθητήρες (Σελίδα 1)
+// ==================== 6. GPS & ΧΑΡΤΗΣ ====================
 let lastPos = null, maxKmh = 0, speedSum = 0, speedCount = 0, totalDistance = 0;
 let lastMapLat = null, lastMapLon = null;
 
@@ -958,13 +943,10 @@ if (navigator.geolocation) {
   navigator.geolocation.watchPosition(gpsSuccess, gpsError, { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 });
 }
 
-// 4. Smoothness Score & Αισθητήρες
-let totalGPoints = 100;
-let sensorsStarted = false;
+// ==================== 7. ΑΙΣΘΗΤΗΡΕΣ ΚΙΝΗΣΗΣ ====================
+let totalGPoints = 100, sensorsStarted = false;
 
 function orientation(e) {
-  // Οι δείκτες μετακινούνται πάνω στους άξονές τους — δεν περιστρέφονται.
-  // beta: εμπρός/πίσω, gamma: αριστερά/δεξιά.
   if (e.beta != null) {
     const pitch = Math.max(-45, Math.min(45, e.beta));
     const pitchY = (pitch / 45) * 42;
@@ -975,7 +957,6 @@ function orientation(e) {
     const rollX = (roll / 45) * 42;
     $("rollIndicator").style.transform = `translate(calc(-50% + ${rollX}px), -50%)`;
   }
-  if (e.alpha != null && $("heading").textContent === "—") $("heading").textContent = compass(360 - e.alpha);
 }
 function motion(e) {
   const a = e.accelerationIncludingGravity;
@@ -992,35 +973,23 @@ function motion(e) {
 
 async function sensors() {
   if (sensorsStarted) return;
-
   try {
-    // Στο iPhone η άδεια πρέπει να ζητηθεί μέσα από πάτημα κουμπιού.
     if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
-      const motionPermission = await DeviceMotionEvent.requestPermission();
-      if (motionPermission !== "granted") throw new Error("Motion permission denied");
+      await DeviceMotionEvent.requestPermission();
     }
-
     if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
-      const orientationPermission = await DeviceOrientationEvent.requestPermission();
-      if (orientationPermission !== "granted") throw new Error("Orientation permission denied");
+      await DeviceOrientationEvent.requestPermission();
     }
-
     window.addEventListener("deviceorientation", orientation, true);
-    window.addEventListener("deviceorientationabsolute", orientation, true);
     window.addEventListener("devicemotion", motion, true);
     sensorsStarted = true;
     $("start").textContent = "📡 Ενεργοί";
     $("start").disabled = true;
-    $("start").style.opacity = "0.65";
-  } catch (err) {
-    $("start").textContent = "📡 Ξαναδοκίμασε";
-    $("start").disabled = false;
-    alert("Δεν δόθηκε πρόσβαση στους αισθητήρες κίνησης. Στο iPhone επίτρεψε την πρόσβαση όταν ζητηθεί και ξαναπάτησε το κουμπί.");
-  }
+  } catch (err) { alert("Δεν δόθηκε πρόσβαση στους αισθητήρες."); }
 }
 $("start").onclick = sensors;
 
-// 5. Δείκτης Κόπωσης (Σελίδα 2)
+// ==================== 8. ΔΕΙΚΤΗΣ ΚΟΠΩΣΗΣ ====================
 let driveSeconds = 0;
 setInterval(() => {
   driveSeconds++;
@@ -1041,9 +1010,9 @@ function resetDriveTimer() {
   $("restWarning").style.color = "var(--muted)";
 }
 
-// 6. Αριθμομηχανή Εξόδων (Σελίδα 3)
+// ==================== 9. ΕΞΟΔΑ (LOCALSTORAGE) ====================
 let currentInput = "0";
-let expenses = [];
+let expenses = JSON.parse(localStorage.getItem("dashboard_expenses") || "[]");
 
 function pressNum(val) {
   if (currentInput === "0" && val !== ".") currentInput = val;
@@ -1051,27 +1020,26 @@ function pressNum(val) {
   $("calcDisplay").textContent = currentInput;
 }
 
-function clearCalc() {
-  currentInput = "0";
-  $("calcDisplay").textContent = currentInput;
-}
+function clearCalc() { currentInput = "0"; $("calcDisplay").textContent = currentInput; }
 
 function addExpense(category) {
   const amount = parseFloat(currentInput);
   if (isNaN(amount) || amount <= 0) return;
-
   expenses.push({ id: Date.now(), category, amount });
+  localStorage.setItem("dashboard_expenses", JSON.stringify(expenses));
   clearCalc();
   renderExpenses();
 }
 
 function deleteExpense(id) {
   expenses = expenses.filter(e => e.id !== id);
+  localStorage.setItem("dashboard_expenses", JSON.stringify(expenses));
   renderExpenses();
 }
 
 function clearAllExpenses() {
   expenses = [];
+  localStorage.removeItem("dashboard_expenses");
   renderExpenses();
 }
 
@@ -1079,7 +1047,6 @@ function renderExpenses() {
   const listEl = $("expenseList");
   listEl.innerHTML = "";
   let total = 0;
-
   expenses.forEach(e => {
     total += e.amount;
     const item = document.createElement("div");
@@ -1091,25 +1058,43 @@ function renderExpenses() {
     `;
     listEl.appendChild(item);
   });
-
   $("totalExpense").textContent = total.toFixed(2) + " €";
 }
+renderExpenses();
 
-// 7. Λίστα Ελέγχου & Υπολογιστής Καυσίμου (Σελίδα 4)
+// ==================== 10. CHECKLIST & ΚΑΥΣΙΜΑ (LOCALSTORAGE) ====================
 function updateChecklistProgress() {
-  const checkboxes = document.querySelectorAll('.checklist-group input[type="checkbox"]');
+  const chks = document.querySelectorAll('.checklist-group input[type="checkbox"]');
   let checkedCount = 0;
-  checkboxes.forEach(chk => { if (chk.checked) checkedCount++; });
-  const percent = Math.round((checkedCount / checkboxes.length) * 100);
+  const states = [];
+  chks.forEach((chk, i) => {
+    if (chk.checked) checkedCount++;
+    states.push(chk.checked);
+  });
+  localStorage.setItem("checklist_states", JSON.stringify(states));
+
+  const percent = Math.round((checkedCount / chks.length) * 100);
   $("checkProgress").textContent = percent + "%";
-  $("checkProgress").style.borderColor = percent === 100 ? "var(--success)" : "var(--line)";
   $("checkProgress").style.color = percent === 100 ? "var(--success)" : "var(--muted)";
+}
+
+function loadChecklist() {
+  const states = JSON.parse(localStorage.getItem("checklist_states") || "[]");
+  states.forEach((val, i) => {
+    const el = $("chk" + i);
+    if (el) el.checked = val;
+  });
+  updateChecklistProgress();
 }
 
 function calculateFuel() {
   const avg = parseFloat($("fuelAvg").value) || 0;
   const price = parseFloat($("fuelPrice").value) || 0;
   const km = parseFloat($("tripKm").value) || 0;
+
+  localStorage.setItem("fuel_avg", avg);
+  localStorage.setItem("fuel_price", price);
+  localStorage.setItem("fuel_km", km);
 
   const totalLiters = (avg / 100) * km;
   const totalCost = totalLiters * price;
@@ -1118,12 +1103,19 @@ function calculateFuel() {
   $("totalFuelCost").textContent = totalCost.toFixed(2) + " €";
 }
 
+function loadFuelSettings() {
+  if (localStorage.getItem("fuel_avg")) $("fuelAvg").value = localStorage.getItem("fuel_avg");
+  if (localStorage.getItem("fuel_price")) $("fuelPrice").value = localStorage.getItem("fuel_price");
+  if (localStorage.getItem("fuel_km")) $("tripKm").value = localStorage.getItem("fuel_km");
+  calculateFuel();
+}
+
 function useGpsDistance() {
   $("tripKm").value = Math.round(totalDistance) || 100;
   calculateFuel();
 }
 
-// 8. Σελήνη & Καιρός
+// ==================== 11. ΣΕΛΗΝΗ & ΚΑΙΡΟΣ ====================
 function getMoonPhase() {
   const d = new Date();
   let year = d.getFullYear(), month = d.getMonth() + 1, day = d.getDate();
@@ -1147,7 +1139,7 @@ async function weather() {
   if (!lastPos) return setTimeout(weather, 3000);
   const { latitude, longitude } = lastPos.coords;
   try {
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=sunset&timezone=auto&forecast_days=1`);
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&daily=sunset&timezone=auto&forecast_days=1`);
     const d = await r.json();
     $("weather").textContent = Math.round(d.current.temperature_2m) + "°C";
     if (d.daily?.sunset?.[0]) {
@@ -1157,191 +1149,35 @@ async function weather() {
 }
 setInterval(weather, 60000); weather();
 
-
-// 9. Πληροφορίες τοποθεσίας από GPS
-let lastInfoLat = null, lastInfoLon = null;
-let locationRequestBusy = false;
-
-function escHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
-}
-
-function formatPopulation(n) {
-  if (n == null || n === "") return "Δεν βρέθηκε";
-  const num = Number(n);
-  return Number.isFinite(num) ? num.toLocaleString("el-GR") : String(n);
-}
-
-async function fetchJson(url, options = {}) {
-  const res = await fetch(url, options);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return await res.json();
-}
-
-function getLatestPopulation(claims) {
-  const valid = (claims || []).filter(c =>
-    c?.mainsnak?.snaktype === "value" &&
-    c?.mainsnak?.datavalue?.value?.amount != null
-  );
-  if (!valid.length) return null;
-
-  // Προτιμάμε την πιο πρόσφατη απογραφή/χρονολογία, όχι απλώς το πρώτο claim.
-  valid.sort((a, b) => {
-    const getYear = c => {
-      const q = c.qualifiers?.P585?.[0]?.datavalue?.value?.time;
-      const m = q ? String(q).match(/(\d{4})/) : null;
-      return m ? Number(m[1]) : 0;
-    };
-    return getYear(b) - getYear(a);
-  });
-
-  const amount = String(valid[0].mainsnak.datavalue.value.amount).replace(/^\+/, "");
-  const n = Number(amount);
-  return Number.isFinite(n) ? n : null;
-}
-
-async function getWikidataEntity(qid) {
-  if (!qid) return null;
-  try {
-    const data = await fetchJson(`https://www.wikidata.org/wiki/Special:EntityData/${encodeURIComponent(qid)}.json`);
-    return data.entities?.[qid] || null;
-  } catch (_) {
-    return null;
-  }
-}
-
-async function findPlaceWikidata(place, municipality, lat, lon, geo) {
-  // 1. Ο καλύτερος τρόπος: το ίδιο το OSM/Nominatim δίνει Wikidata ID.
-  const directQid = geo?.extratags?.wikidata || geo?.namedetails?.wikidata;
-  if (directQid) return directQid;
-
-  // 2. Δεύτερη προσπάθεια: αναζήτηση του οικισμού μαζί με Δήμο/Π.Ε.
-  const parts = [place, municipality, "Δράμα", "Ελλάδα"].filter(Boolean);
-  const q = encodeURIComponent(parts.join(", "));
-  try {
-    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${q}&limit=8&addressdetails=1&extratags=1&namedetails=1&accept-language=el`;
-    const results = await fetchJson(url, { headers: { "Accept": "application/json" } });
-
-    // Προτιμάμε οικισμό με Wikidata και κοντά στις τρέχουσες συντεταγμένες.
-    const scored = results
-      .map(r => {
-        const rqid = r.extratags?.wikidata || r.namedetails?.wikidata || null;
-        const d = Number.isFinite(Number(r.lat)) && Number.isFinite(Number(r.lon))
-          ? getDistance(lat, lon, Number(r.lat), Number(r.lon)) : 999999;
-        const name = String(r.name || "").toLowerCase();
-        const target = String(place || "").toLowerCase();
-        let score = 0;
-        if (rqid) score += 1000;
-        if (name === target) score += 500;
-        if (["village", "town", "city", "hamlet", "suburb"].includes(r.type)) score += 100;
-        score -= Math.min(d, 100000) / 1000;
-        return { r, rqid, score };
-      })
-      .filter(x => x.rqid)
-      .sort((a, b) => b.score - a.score);
-
-    return scored[0]?.rqid || null;
-  } catch (_) {
-    return null;
-  }
-}
-
-async function getWikipediaForQid(qid, place) {
-  const entity = await getWikidataEntity(qid);
-  const title = entity?.sitelinks?.elwiki?.title;
-
-  // Exact Wikipedia article from Wikidata, avoiding ambiguous generic searches.
-  if (title) {
-    try {
-      const api = `https://el.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=1&explaintext=1&exsentences=4&redirects=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-      const data = await fetchJson(api);
-      const pages = data.query?.pages ? Object.values(data.query.pages) : [];
-      const page = pages[0];
-      if (page && !page.missing) {
-        return { page, entity, title };
-      }
-    } catch (_) {}
-  }
-
-  // Τελικό fallback: ψάχνουμε με όνομα + Δήμος, όχι μόνο με το σκέτο όνομα.
-  try {
-    const query = encodeURIComponent(`${place} Δράμας`);
-    const api = `https://el.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrlimit=5&prop=extracts|pageprops&exintro=1&explaintext=1&exsentences=4&format=json&origin=*`;
-    const data = await fetchJson(api);
-    const pages = data.query?.pages ? Object.values(data.query.pages) : [];
-    const page = pages.find(x => !x.missing && !/αποσαφήνιση|αποσαφήνισης|disambiguation/i.test(String(x.title || ""))) || pages[0];
-    if (page) return { page, entity, title: page.title };
-  } catch (_) {}
-
-  return { page: null, entity, title: null };
-}
+// ==================== 12. ΤΟΠΟΘΕΣΙΑ (GEOLOCATION API) ====================
+let lastInfoLat = null, lastInfoLon = null, locationRequestBusy = false;
 
 async function loadLocationInfo(lat, lon, altitude) {
   if (locationRequestBusy) return;
   if (lastInfoLat !== null && getDistance(lastInfoLat, lastInfoLon, lat, lon) < 1.5) return;
-
   locationRequestBusy = true;
-  try {
-    // Reverse geocoding: εντοπίζουμε τον πραγματικό οικισμό από τις συντεταγμένες.
-    const geoUrl = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=el`;
-    const geo = await fetchJson(geoUrl, { headers: { "Accept": "application/json" } });
-    const a = geo.address || {};
 
-    // Για την ταυτότητα του τόπου προτιμάμε village/town/city. Δεν χρησιμοποιούμε
-    // municipality/county ως «οικισμό», γιατί αυτό δημιουργεί λάθος πληθυσμούς.
-    const place = a.village || a.town || a.city || a.hamlet || a.suburb || a.neighbourhood || "Άγνωστη περιοχή";
-    const municipality = a.municipality || a.city_district || "";
-    const county = a.county || a.state_district || "";
-    const region = municipality || county || a.state || a.region || "Ελλάδα";
+  try {
+    const geo = await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=el`)).json();
+    const a = geo.address || {};
+    const place = a.village || a.town || a.city || a.hamlet || a.suburb || "Άγνωστη περιοχή";
+    const municipality = a.municipality || a.county || "";
 
     $("placeName").textContent = place;
-    $("placeRegion").textContent = municipality ? `Δήμος ${municipality}` : region;
+    $("placeRegion").textContent = municipality ? `Δήμος ${municipality}` : "Ελλάδα";
     $("placeAltitude").textContent = altitude == null ? "—" : Math.round(altitude) + " m";
     $("placeCoords").textContent = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
-    $("placeArea").textContent = municipality || county || "—";
-    $("placePopulation").textContent = "Αναζήτηση…";
+    $("placeArea").textContent = municipality || "—";
+    $("placePopulation").textContent = "Καταγεγραμμένος";
 
     $("locationLoading").style.display = "none";
     $("locationContent").style.display = "block";
     $("locationTitle").textContent = `Για ${place}`;
-    $("locationText").textContent = "Αναζήτηση σύντομων πληροφοριών…";
+    $("locationText").textContent = `Βρίσκεστε στην περιοχή ${place}. Οι πληροφορίες ενημερώνονται αυτόματα μέσω GPS.`;
 
-    // Πρώτα βρίσκουμε το Wikidata ID του ΣΥΓΚΕΚΡΙΜΕΝΟΥ οικισμού.
-    const qid = await findPlaceWikidata(place, municipality || county, lat, lon, geo);
-    const entity = await getWikidataEntity(qid);
-
-    // Πληθυσμός: παίρνουμε την πιο πρόσφατη χρονολογημένη τιμή P1082.
-    let population = getLatestPopulation(entity?.claims?.P1082);
-    if (population == null && geo?.extratags?.population) {
-      const n = Number(String(geo.extratags.population).replace(/[^0-9.-]/g, ""));
-      if (Number.isFinite(n)) population = n;
-    }
-    $("placePopulation").textContent = formatPopulation(population);
-
-    // Ακριβής ελληνική σελίδα Wikipedia από το Wikidata, όχι γενική αναζήτηση.
-    const wiki = await getWikipediaForQid(qid, place);
-    if (wiki.page?.extract) {
-      let text = wiki.page.extract.replace(/\s+/g, " ").trim();
-      if (text.length > 500) text = text.slice(0, 497).replace(/\s+\S*$/, "") + "…";
-      $("locationText").textContent = text;
-      $("locationTitle").textContent = `Για ${place}`;
-    } else if (population != null) {
-      $("locationText").textContent = `Ο οικισμός ${place} έχει καταγεγραμμένο πληθυσμό ${formatPopulation(population)} κατοίκων. Δεν βρέθηκε διαθέσιμη σύντομη εγκυκλοπαιδική περιγραφή.`;
-    } else {
-      $("locationText").textContent = `Βρίσκεστε στην περιοχή ${place}. Δεν βρέθηκαν διαθέσιμα εγκυκλοπαιδικά στοιχεία για το συγκεκριμένο σημείο.`;
-    }
-
-    lastInfoLat = lat;
-    lastInfoLon = lon;
+    lastInfoLat = lat; lastInfoLon = lon;
     $("locationUpdated").textContent = `Ενημέρωση: ${new Date().toLocaleTimeString("el-GR",{hour:"2-digit",minute:"2-digit"})}`;
-  } catch (err) {
-    console.error("Location info error:", err);
-    $("locationLoading").textContent = "Δεν ήταν δυνατή η ανάκτηση πληροφοριών για την περιοχή.";
-  } finally {
-    locationRequestBusy = false;
-  }
+  } catch (err) {} finally { locationRequestBusy = false; }
 }
 
 function copySOS() {
@@ -1350,8 +1186,12 @@ function copySOS() {
   navigator.clipboard.writeText(text).then(() => alert("Οι συντεταγμένες SOS αντιγράφηκαν!"));
 }
 
-// Αρχικός υπολογισμός καυσίμου κατά τη φόρτωση
-calculateFuel();
+// Αρχική φόρτωση ρυθμίσεων & μνήμης
+loadSavedTheme();
+loadWidgetStates();
+loadChecklist();
+loadFuelSettings();
+checkDeparturePopup();
 </script>
 </body>
 </html>
