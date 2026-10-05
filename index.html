@@ -163,6 +163,116 @@ main {
   transition: transform 0.2s ease-out;
 }
 
+
+/* Graphical tilt indicators */
+.tilt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.tilt-panel {
+  min-width: 0;
+  text-align: center;
+}
+.tilt-gauge {
+  position: relative;
+  height: 86px;
+  margin-top: 5px;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+  background: rgba(255,255,255,.018);
+  overflow: hidden;
+}
+.tilt-track {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  bottom: 9px;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--line) 15%, var(--line) 85%, transparent);
+  transform: translateX(-50%);
+}
+.pitch-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34px;
+  height: 2px;
+  background: var(--muted);
+  opacity: .7;
+  transform: translate(-50%, -50%);
+}
+.pitch-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(86,214,255,.35);
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  transition: transform .12s linear;
+}
+.pitch-indicator span, .roll-indicator span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 2px solid var(--accent);
+  transform: translate(-50%, -50%);
+}
+.tilt-end {
+  position: absolute;
+  font-size: 8px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: .4px;
+}
+.tilt-end.top { top: 3px; left: 50%; transform: translateX(-50%); }
+.tilt-end.bottom { bottom: 3px; left: 50%; transform: translateX(-50%); }
+.roll-track {
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--line) 15%, var(--line) 85%, transparent);
+  transform: translateY(-50%);
+}
+.roll-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 34px;
+  background: var(--muted);
+  opacity: .7;
+  transform: translate(-50%, -50%);
+}
+.roll-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(86,214,255,.35);
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  transition: transform .12s linear;
+}
+.roll-indicator span { width: 12px; height: 12px; }
+@media (max-width: 650px) {
+  .tilt-grid { gap: 7px; }
+  .tilt-gauge { height: 76px; }
+}
+
 .row { display: flex; justify-content: space-between; gap: 6px; width: 100%; }
 
 .notice {
@@ -529,9 +639,31 @@ footer { gap: 10px; }
       <section class="card">
         <div>
           <div class="label">Αισθητήρες Κίνησης</div>
-          <div class="row" style="margin-top:8px">
-            <div class="metric"><div class="label">Πρόσθια Κλίση</div><div class="value" id="pitch">—</div></div>
-            <div class="metric"><div class="label">Πλευρική Κλίση</div><div class="value" id="roll">—</div></div>
+          <div class="tilt-grid" style="margin-top:8px">
+            <div class="tilt-panel">
+              <div class="label">Πρόσθια / Πίσω</div>
+              <div class="tilt-gauge pitch-gauge" aria-label="Γραφικός δείκτης πρόσθιας κλίσης">
+                <div class="pitch-track"></div>
+                <div class="pitch-center"></div>
+                <div class="pitch-indicator" id="pitchIndicator">
+                  <span></span>
+                </div>
+                <div class="tilt-end top">ΕΜΠΡΟΣ</div>
+                <div class="tilt-end bottom">ΠΙΣΩ</div>
+              </div>
+            </div>
+            <div class="tilt-panel">
+              <div class="label">Αριστερά / Δεξιά</div>
+              <div class="tilt-gauge roll-gauge" aria-label="Γραφικός δείκτης πλευρικής κλίσης">
+                <div class="roll-track"></div>
+                <div class="roll-center"></div>
+                <div class="roll-indicator" id="rollIndicator">
+                  <span></span>
+                </div>
+                <div class="tilt-end left">ΑΡΙΣΤ.</div>
+                <div class="tilt-end right">ΔΕΞΙΑ</div>
+              </div>
+            </div>
           </div>
           <div class="row" style="margin-top:8px">
             <div class="metric"><div class="label">Υψόμετρο</div><div class="value" id="alt">—</div></div>
@@ -825,8 +957,16 @@ if (navigator.geolocation) {
 // 4. Smoothness Score & Αισθητήρες
 let totalGPoints = 100;
 function orientation(e) {
-  if (e.beta != null) $("pitch").textContent = Math.round(e.beta) + "°";
-  if (e.gamma != null) $("roll").textContent = Math.round(e.gamma) + "°";
+  // Γραφική απεικόνιση αντί για αριθμούς: ο δείκτης περιστρέφεται ανάλογα
+  // με την πρόσθια/πίσω και την πλευρική κλίση της συσκευής.
+  if (e.beta != null) {
+    const pitch = Math.max(-45, Math.min(45, e.beta));
+    $("pitchIndicator").style.transform = `translate(-50%, -50%) rotate(${pitch}deg)`;
+  }
+  if (e.gamma != null) {
+    const roll = Math.max(-45, Math.min(45, e.gamma));
+    $("rollIndicator").style.transform = `translate(-50%, -50%) rotate(${roll}deg)`;
+  }
   if (e.alpha != null && $("heading").textContent === "—") $("heading").textContent = compass(360 - e.alpha);
 }
 function motion(e) {
